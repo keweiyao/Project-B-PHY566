@@ -104,9 +104,9 @@ class eco_system:
         self.wolf_list = []
         
         self.deer_starve = 1e10
-        self.deer_rep = 10
-        self.wolf_starve = 10
-        self.wolf_rep = 20
+        self.deer_rep = 5
+        self.wolf_starve = 20
+        self.wolf_rep = 60
         
         #initialize the deer list
         for i in range(self.n_deer):
@@ -222,9 +222,6 @@ class eco_system:
                     deerpos = choice(deernb)
                     thiswolf.age_starve = 0   # after eating, reset its age_starve
                     thiswolf.present_position = deerpos
-                    for sad_deer in self.deer_list:
-                        if sad_deer.present_position == deerpos:  # pick out eaten deer
-                            self.deer_list.remove(sad_deer)
                 self.occupication_matrix[thiswolf.old_position] = 0
                 self.occupication_matrix[thiswolf.present_position] = 2
 
@@ -240,6 +237,13 @@ class eco_system:
             #merge newborn wolf list with the original wolf list
             self.wolf_list = self.wolf_list + new_born_wolf_list
             
+            #___DEER_eaten_clear_loop
+            temp_deer_list = []
+            for thisdeer in self.deer_list:
+                if self.occupication_matrix[thisdeer.present_position] == 1: #If it is not captured by a wolf
+                    temp_deer_list.append(thisdeer)
+            self.deer_list = temp_deer_list
+
             new_born_deer_list = [] #new born deer list buffer
             #___LIVING_DEER_LOOP_____
             for thisdeer in self.deer_list:
@@ -280,7 +284,7 @@ class eco_system:
 
 #__________Main_function_________
 #testing
-our_eco_system = eco_system(50, 2, 30, 0).eco_evolution()
+our_eco_system = eco_system(100, 20, 100, 0).eco_evolution()
 deernum = our_eco_system[0]
 wolfnum = our_eco_system[1]
 timenum = our_eco_system[2]
