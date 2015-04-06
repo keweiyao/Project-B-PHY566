@@ -38,7 +38,6 @@ class animal:
     def __init__(self,  i, j, starve_age,  reproduction_age):
         self.old_position = (i, j)      # initialize the old position with i and j
         self.present_position = (i, j)  # initialize the present positon with i and j
-        # self.age = 0                    # initial age is set to zero
         self.age_rep = 0  # setting procreation age
         self.age_starve = 0    # setting starve age
         self.breedage = reproduction_age
@@ -49,34 +48,25 @@ class animal:
                                         #the list of animals we will call the bread function if there is enough space to bread
         self.marked = False
     
-    #aging function, increase age by one
-    '''
-    def aging(self):
-        self.age = self.age + 1
-    '''
+    
     #updating the bread stauts
     def check_breed(self):
         if self.age_rep >= self.breedage:
             return "mature"
         else:
             return "immature"
-    '''
+    
     #When calling the bread function, the age and bread status is reset, and the present location of the animal is returned for initialization of the bady animal
     def breed(self):
         self.age = 0
         self.breed_status = "immature"
         return self.old_position
 
-    #move function of the animal, with changes in x and y direction as input parameters, updates the old and present location
-    def move(self, di, dj):
-        self.old_position = self.present_position
-        self.present_position = [self.old_position[0] + di, self.old_position[1] + dj]
-    '''
     #starve function will determine the life status according to the age compared to the starving age
     def starve(self):
         if self.age_starve > self.starveage:
             return "dead"
-        if self.age_starve <= self.starveage:
+        else:
             return "live"
     
 #Inherit (from animal) class: deer
@@ -107,16 +97,16 @@ class eco_system:
         self.n_deer = init_number_of_deer
         self.n_wolf = init_number_of_wolf
         self.occupication_matrix = zeros((self.N, self.N))
-        self.totaltimesteps = 100
+        self.totaltimesteps = 1000
         
         #lists of deer and wolf
         self.deer_list = []
         self.wolf_list = []
         
         self.deer_starve = 1e10
-        self.deer_rep = 3
-        self.wolf_starve = 12
-        self.wolf_rep = 10
+        self.deer_rep = 10
+        self.wolf_starve = 10
+        self.wolf_rep = 20
         
         #initialize the deer list
         for i in range(self.n_deer):
@@ -180,150 +170,100 @@ class eco_system:
         for t in range(self.totaltimesteps):
             self.t += 1 # after each evolution, time ++
             # first, check the status of wolves
-            # wolf_delete_number = []
+            # wolf and deer aging and dying loop/ these are done first as they change the number and indexing of the list which may caused sutble bugs...
+
+            wolf_temp_list = []
             for thiswolf in self.wolf_list:
-                if not thiswolf.marked:
-                    thiswolf.marked = True
-                    i,j = thiswolf.present_position
-                    nbb = [(i-1,j), (i+1,j), (i,j+1), (i,j-1)]
-                    neighbor = []
-                    for nb in nbb: 
-                        if nb[0] >= self.N:
-                            nb = (nb[0]-self.N, nb[1])
-                        if nb[1] >= self.N:
-                            nb = (nb[0], nb[1]-self.N)
-                        if nb[0] < 0:
-                            nb = (nb[0]+self.N, nb[1])
-                        if nb[1] < 0:
-                            nb = (nb[0], nb[1]+self.N)
-                        neighbor.append(nb)
-                        # generate appropriate neighbor positions
-                    deernb = []  #deer neighbors
-                    wolfnb = []  #wolf neighbors
-                    for k in range(4): # check whether there are deer neighbors around the wolf, add their positions to the deer neighbor list
-                        if self.occupication_matrix[neighbor[k]] == 1: deernb.append(neighbor[k])
-                        if self.occupication_matrix[neighbor[k]] == 2: wolfnb.append(neighbor[k])
-                    if len(deernb) == 0:
-                        '''
-                        If there are no deer around the wolf, need to consider:
-                        1. if wolf starve to death? if yes, kill; if not, leave
-                        2. if wolf reproduce? if yes, put a new wolf at original position, if not, just move
-                        let wolf's age + 1 after eating and moving
-                        another extreme situation:
-                        all wolves around this wolf, then just don't move and don't reproduce
-                        '''
-                        thiswolf.age_starve += 1
-                        thiswolf.age_rep += 1
-                        if (len(wolfnb) < 4): 
-                            if thiswolf.starve() == "dead":
-                                self.occupication_matrix[thiswolf.present_position] = 0
-                                newwolf_list = [w for w in self.wolf_list if w != thiswolf]
-                                self.wolf_list = newwolf_list
-                            else:
-                                if thiswolf.check_breed() == "mature":
-                                    newpos = thiswolf.present_position
-                                    x = newpos[0]
-                                    y = newpos[1]
-                                    newwolf = wolf(x, y, 12, 10)
-                                    newwolf.marked = True;
-                                    self.wolf_list.append(newwolf)
-                                    thiswolf.age_rep = 0
-                                else: self.occupication_matrix[thiswolf.present_position] = 0
-                                neighbor = [n for n in neighbor if n not in wolfnb]
-                                thiswolf.old_position = thiswolf.present_position
-                                thiswolf.present_position = choice(neighbor)
-                                # wolf.aging
-                                self.occupication_matrix[thiswolf.present_position] = 2
-                                # update wolf position, old position no need to change (occupied by new wolf)
-                                # new position need to change to 2
-                        else: 
-                            if thiswolf.starve() == "dead":
-                                self.occupication_matrix[thiswolf.present_position] = 0
-                                newwolf_list = [w for w in self.wolf_list if w != thiswolf]
-                                self.wolf_list = newwolf_list
-                    else:
-                        '''
-                        if there are deers around the wolf, the deers' positions are recorded in deernb[], consider:
-                        1. choose a random deer to eat -> reset starve age -> pop that deer out of deerlist, clear correspondent grid point
-                        2. if wolf reproduce? if yes, breed; if not, just move
-                        '''
-                        deerpos = choice(deernb)
-                        thiswolf.age_starve = 0   # after eating, reset its age_starve
-                        thiswolf.age_rep += 1
-                        newdeer_list = [d for d in self.deer_list if d.present_position != deerpos]  # pop out eaten deer
-                        self.deer_list = newdeer_list
-                        self.occupication_matrix[deerpos] = 2  # update deer's number to wolf's number
-                        if thiswolf.check_breed() == "mature":
-                            newpos = thiswolf.present_position
-                            x = newpos[0]
-                            y = newpos[1]
-                            newwolf = wolf(x, y, 12, 10)
-                            self.wolf_list.append(newwolf)
-                            newwolf.marked = True
-                            thiswolf.age_rep = 0
-                        else: self.occupication_matrix[thiswolf.present_position] = 0
-                        thiswolf.old_position = thiswolf.present_position
-                        thiswolf.present_position = deerpos
-                    # wolf.aging
-            # sort(wolf_delete_number)
-            # print len(wolf_delete_number)
-            # for i in range(len(wolf_delete_number)):
-                # self.wolf_list.pop(wolf_delete_number[-i-1])
-            '''
-            the method to pop our wolves need to be deleted, otherwise the change of list would be complicated
-            '''
+                thiswolf.marked = True
+                thiswolf.age_starve += 1
+                thiswolf.age_rep += 1
+                if thiswolf.starve() == "live":
+                    wolf_temp_list.append(thiswolf)
+                else:
+                    print "killed"
+                    self.occupication_matrix[thiswolf.present_position] = 0
+            self.wolf_list = wolf_temp_list
             
+            #aging and clear wolf list complished!
+            deer_temp_list = []
             for thisdeer in self.deer_list:
-                if not thisdeer.marked:
-                    thisdeer.marked = True
-                    i, j = thisdeer.present_position
-                    nbb = [(i-1,j), (i+1,j), (i,j+1), (i,j-1)]
-                    neighbor = []
-                    for nb in nbb: 
-                        if nb[0] >= self.N:
-                            nb = (nb[0]-self.N, nb[1])
-                        if nb[1] >= self.N:
-                            nb = (nb[0], nb[1]-self.N)
-                        if nb[0] < 0:
-                            nb = (nb[0]+self.N, nb[1])
-                        if nb[1] < 0:
-                            nb = (nb[0], nb[1]+self.N)
-                        neighbor.append(nb)
-                        # generate appropriate neighbor positions
-                    # generate appropriate neighbor positions
-                    availablenb = [n for n in neighbor if self.occupication_matrix[(n[0], n[1])] == 0]
-                    # check whether there are available positions for deer to move
-                    thisdeer.age_rep += 1
-                    thisdeer.age_starve += 1
-                    if len(availablenb) > 0:
-                        '''if there are available position for deer to move, need to consider
-                        1. if deer reproduce? if yes, produce and move; if no, just move
-                        2. aging
-                        if no available position, no need to move or produce, just add age_rep
-                        '''
-                        if thisdeer.check_breed() == "mature":
-                            newpos = thisdeer.present_position
-                            x = newpos[0]
-                            y = newpos[1]
-                            newdeer = deer(x, y, 1e10, 3)
-                            newdeer.marked = True
-                            self.deer_list.append(newdeer)
-                            thisdeer.age_rep = 0
-                        else: self.occupication_matrix[thisdeer.present_position] = 0
-                        thisdeer.old_position = thisdeer.present_position
-                        thisdeer.present_position = choice(availablenb)
-                        self.occupication_matrix[thisdeer.present_position] = 1
-                        # deer.aging
-                    else:
-                        if thisdeer.starve() == "dead":
-                            if thisdeer.check_breed() != "mature":
-                                newdeer_list = [d for d in self.deer_list if d != thisdeer]
-                                self.deer_list = newdeer_list
-                                self.occupication_matrix[thisdeer.present_position] = 0
-                            else:
-                                thisdeer.age_starve = 0
-                                thisdeer.age_rep = 0
-                            
+                thisdeer.marked = True
+                thisdeer.age_starve += 1
+                thisdeer.age_rep += 1
+                if thisdeer.starve() == "live":
+                    deer_temp_list.append(thisdeer)
+                else:
+                    self.occupication_matrix[thisdeer.present_position] = 0
+            self.deer_list = deer_temp_list
+            #aging and clear deer list complished!
+            
+            
+            #From below we ONLY work on the wolf/deer list after killing dead ones!
+
+            new_born_wolf_list = [] #new born wolf list buffer
+            #__LIVING_WOLF_LOOP
+            for thiswolf in self.wolf_list:
+
+                i,j = thiswolf.present_position
+                neighbor = [((i-1)%self.N,j), ((i+1)%self.N,j), (i,(j+1)%self.N), (i,(j-1)%self.N)]
+
+                deernb = []  #deer neighbors of this wolf
+                wolfnb = []  #wolf neighbors of this deer
+                for k in range(4): # check whether there are deer/wolf neighbors around the wolf, add their positions to the deer/wolf neighbor list
+                    if self.occupication_matrix[neighbor[k]] == 1: deernb.append(neighbor[k])
+                    if self.occupication_matrix[neighbor[k]] == 2: wolfnb.append(neighbor[k])
+
+                #__Two situation of wolf move___
+                thiswolf.old_position = thiswolf.present_position
+                if len(deernb) == 0:
+                    if (len(wolfnb) < 4):
+                        thiswolf.present_position = choice([n for n in neighbor if n not in wolfnb])
+                else:
+                    deerpos = choice(deernb)
+                    thiswolf.age_starve = 0   # after eating, reset its age_starve
+                    thiswolf.present_position = deerpos
+                    for sad_deer in self.deer_list:
+                        if sad_deer.present_position == deerpos:  # pick out eaten deer
+                            self.deer_list.remove(sad_deer)
+                self.occupication_matrix[thiswolf.old_position] = 0
+                self.occupication_matrix[thiswolf.present_position] = 2
+
+                #if it deposite a new one behind (only when the wolf have some where to move)
+                if thiswolf.check_breed() == "mature" and thiswolf.old_position != thiswolf.present_position:
+                    newpos = thiswolf.old_position
+                    x = newpos[0]
+                    y = newpos[1]
+                    newwolf = wolf(x, y, self.wolf_starve, self.wolf_rep)
+                    new_born_wolf_list.append(newwolf)
+                    self.occupication_matrix[thiswolf.old_position] = 2
+                    thiswolf.age_rep = 0
+            #merge newborn wolf list with the original wolf list
+            self.wolf_list = self.wolf_list + new_born_wolf_list
+            
+            new_born_deer_list = [] #new born deer list buffer
+            #___LIVING_DEER_LOOP_____
+            for thisdeer in self.deer_list:
+                i, j = thisdeer.present_position
+                neighbor = [((i-1)%self.N,j), ((i+1)%self.N,j), (i,(j+1)%self.N), (i,(j-1)%self.N)]
+                availablenb = [n for n in neighbor if self.occupication_matrix[(n[0], n[1])] == 0]
+                # check whether there are available positions for deer to move
+                thisdeer.old_position = thisdeer.present_position
+                if len(availablenb) > 0:
+                    thisdeer.present_position = choice(availablenb)
+                self.occupication_matrix[thisdeer.old_position] = 0
+                self.occupication_matrix[thisdeer.present_position] = 1
+                
+                if thisdeer.check_breed() == "mature" and thisdeer.old_position != thisdeer.present_position:
+                    newpos = thisdeer.old_position
+                    x = newpos[0]
+                    y = newpos[1]
+                    newdeer = deer(x, y, self.deer_starve, self.deer_rep)
+                    new_born_deer_list.append(newdeer)
+                    self.occupication_matrix[thisdeer.old_position] = 1
+                    thisdeer.age_rep = 0
+            self.deer_list = self.deer_list + new_born_deer_list
+                
+
             deer_num = len(self.deer_list)
             wolf_num = len(self.wolf_list)
             deernum.append(deer_num)
@@ -344,8 +284,9 @@ our_eco_system = eco_system(50, 2, 30, 0).eco_evolution()
 deernum = our_eco_system[0]
 wolfnum = our_eco_system[1]
 timenum = our_eco_system[2]
-plot(timenum,wolfnum, "r")
-plot(timenum, deernum, "b")
+plot(timenum, wolfnum, "r", linewidth = 3, label = "wolf population")
+plot(timenum, deernum, "b", linewidth = 3, label = "deer population")
+legend(loc = "upper right", fontsize = 20)
 show()
 #Inplementing, boundary conditions,
 
