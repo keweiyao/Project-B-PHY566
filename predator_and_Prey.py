@@ -90,14 +90,14 @@ class wolf(animal):
 #________________Eco_system class________________________________
 # it contains the lists of animals, a matrix recording the position of the animals (0: nothing, 1: deer, 2: wolf) and all the statistical data such as the number of deer and wolf ...
 class eco_system:
+    
     #initialize the ecosystem with initial number of deer/wolf, world size (100*100 for example), initial time (0 for example)
-    def __init__(self, init_number_of_deer, init_number_of_wolf, grid_size, init_time):
-        self.t = init_time
+    def __init__(self, init_number_of_deer, init_number_of_wolf, grid_size):
+        self.t = 0
         self.N = grid_size
         self.n_deer = init_number_of_deer
         self.n_wolf = init_number_of_wolf
         self.occupication_matrix = zeros((self.N, self.N))
-        self.totaltimesteps = 1000
         
         #lists of deer and wolf
         self.deer_list = []
@@ -133,30 +133,10 @@ class eco_system:
             self.occupication_matrix[(x,y)] = 2
             wolf_instance = wolf(x, y, self.wolf_starve, self.wolf_rep)
             self.wolf_list.append(wolf_instance)
-        
-        #output the information of deer and wolf just to test
-        i = 0
-        for item in self.deer_list:
-            print "-----deer%d info:"%i
-            print item.old_position
-            print item.present_position
-            #print item.age
-            print item.age_rep
-            print item.age_starve
-            i = i + 1
-
-        i = 0
-        for item in self.wolf_list:
-            print "-----wolf%d info:"%i
-            print item.old_position
-            print item.present_position
-            #print item.age
-            print item.age_rep
-            print item.age_starve
-            i = i + 1
 
     #time evolution function (Need lots of work from Fan!!! We can help as well)
-    def eco_evolution(self):
+    def eco_evolution(self, total_time_steps):
+        self.totaltimesteps = total_time_steps
         #add a lot of things here
         '''
         should return three lists: the number of deers at that time, the number of wolves at that time, and time
@@ -284,18 +264,13 @@ class eco_system:
 
 #__________Main_function_________
 #testing
-our_eco_system = eco_system(100, 20, 100, 0).eco_evolution()
-deernum = our_eco_system[0]
-wolfnum = our_eco_system[1]
-timenum = our_eco_system[2]
+our_eco_system = eco_system(100, 20, 100)
+
+deernum, wolfnum, timenum = our_eco_system.eco_evolution(1000)
+
 plot(timenum, wolfnum, "r", linewidth = 3, label = "wolf population")
 plot(timenum, deernum, "b", linewidth = 3, label = "deer population")
 legend(loc = "upper right", fontsize = 20)
+
 show()
-#Inplementing, boundary conditions,
 
-
-#Visuialization
-
-
-#...
