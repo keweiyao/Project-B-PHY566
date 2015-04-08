@@ -38,10 +38,10 @@ class animal:
     def __init__(self,  i, j, starve_age,  reproduction_age):
         self.old_position = (i, j)      # initialize the old position with i and j
         self.present_position = (i, j)  # initialize the present positon with i and j
-        self.age_rep = 0  # setting procreation age
-        self.age_starve = 0    # setting starve age
-        self.breedage = reproduction_age
-        self.starveage = starve_age
+        self.breedage = reproduction_age# setting procreation age
+        self.starveage = starve_age     # setting starve age
+        self.age_rep = randint(0, int(reproduction_age*0.5))
+        self.age_starve = randint(0, int(starve_age*0.5))
         self.living_status = "live"     # setting live status of the animal "live"/"dead", each time when we loop over
                                         #the list of animals we will delete the object with status "dead"
         self.breed_status = "immature"  # setting the breed statys of the animal "mature"/"immature", each time when we loop over
@@ -71,21 +71,12 @@ class animal:
     
 #Inherit (from animal) class: deer
 class deer(animal):
-    #update function
-    def update(self):
-        #add something here ...
-        return
-
+    def name(self):
+        return "deer"
 #Inherit (from animal) class: deer
 class wolf(animal):
-    #hunt and eat function, which is called when we loop over the wolf list and there is a deer around
-    def hunt_and_eat(self):
-        age = 0
-        #add something here ...
-    #update function
-    def update(self):
-        #add something here ...
-        return
+    def name(self):
+        return "wolf"
 
 #________________Eco_system class________________________________
 # it contains the lists of animals, a matrix recording the position of the animals (0: nothing, 1: deer, 2: wolf) and all the statistical data such as the number of deer and wolf ...
@@ -105,8 +96,8 @@ class eco_system:
         
         self.deer_starve = 1e10
         self.deer_rep = 5
-        self.wolf_starve = 20
-        self.wolf_rep = 60
+        self.wolf_starve = 10
+        self.wolf_rep = 15
         
         #initialize the deer list
         for i in range(self.n_deer):
@@ -147,7 +138,15 @@ class eco_system:
         deernum = [deer_num]
         wolfnum = [wolf_num]
         timenum = [self.t]
+        figure(figsize = (7,7))
         for t in range(self.totaltimesteps):
+            """
+            if t%1 == 0:
+                clf()
+                imshow(self.occupication_matrix, vmin = 0, vmax = 2)
+                colorbar()
+                pause(0.01)
+            """
             self.t += 1 # after each evolution, time ++
             # first, check the status of wolves
             # wolf and deer aging and dying loop/ these are done first as they change the number and indexing of the list which may caused sutble bugs...
@@ -160,8 +159,8 @@ class eco_system:
                 if thiswolf.starve() == "live":
                     wolf_temp_list.append(thiswolf)
                 else:
-                    print "killed"
                     self.occupication_matrix[thiswolf.present_position] = 0
+            print "%d wolves dead"%(len(self.wolf_list)-len(wolf_temp_list))
             self.wolf_list = wolf_temp_list
             
             #aging and clear wolf list complished!
@@ -174,7 +173,9 @@ class eco_system:
                     deer_temp_list.append(thisdeer)
                 else:
                     self.occupication_matrix[thisdeer.present_position] = 0
+            print "%d deer dead"%(len(self.deer_list)-len(deer_temp_list))
             self.deer_list = deer_temp_list
+            
             #aging and clear deer list complished!
             
             
@@ -222,6 +223,7 @@ class eco_system:
             for thisdeer in self.deer_list:
                 if self.occupication_matrix[thisdeer.present_position] == 1: #If it is not captured by a wolf
                     temp_deer_list.append(thisdeer)
+            print "%d deer killed by wolves"%(len(self.deer_list)-len(temp_deer_list))
             self.deer_list = temp_deer_list
 
             new_born_deer_list = [] #new born deer list buffer
@@ -264,13 +266,23 @@ class eco_system:
 
 #__________Main_function_________
 #testing
-our_eco_system = eco_system(100, 20, 100)
+our_eco_system = eco_system(150, 50, 50)
 
 deernum, wolfnum, timenum = our_eco_system.eco_evolution(1000)
 
+figure(figsize = (7, 7))
+subplot(1,2,1)
 plot(timenum, wolfnum, "r", linewidth = 3, label = "wolf population")
 plot(timenum, deernum, "b", linewidth = 3, label = "deer population")
-legend(loc = "upper right", fontsize = 20)
+legend(loc = "upper right", fontsize = 15)
+#semilogy()
+subplot(1,2,2)
+plot(wolfnum, deernum, 'g', linewidth = 3, label = "Phase space trajectory")
+legend(loc = "upper right", fontsize = 15)
+xlabel("Deer population", fontsize = 15)
+ylabel("Wolf population", fontsize = 15)
+semilogx()
+semilogy()
 
 show()
 
