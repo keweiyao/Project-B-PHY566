@@ -139,8 +139,8 @@ class eco_system:
     
     #time evolution function (Need lots of work from Fan!!! We can help as well)
     def eco_evolution(self, total_time_steps):
-        self.totaltimesteps=1
-	#self.totaltimesteps = total_time_steps
+        self.totaltimesteps = 1
+        #self.totaltimesteps = total_time_steps
         #add a lot of things here
         '''
         should return three lists: the number of deers at that time, the number of wolves at that time, and time
@@ -152,10 +152,10 @@ class eco_system:
         wolfnum = [wolf_num]
         timenum = [self.t]
        
-	cmap=matplotlib.colors.ListedColormap(['white','blue','red'])
+        cmap=matplotlib.colors.ListedColormap(['white','blue','red'])
         bounds=[-.5,.5,1.5,2.5]
         norm= matplotlib.colors.BoundaryNorm(bounds,cmap.N) 
-	for t in range(self.totaltimesteps):
+        for t in range(self.totaltimesteps):
             self.t += 1 # after each evolution, time ++
             # first, check the status of wolves
             # wolf and deer aging and dying loop/ these are done first as they change the number and indexing of the list which may caused sutble bugs...
@@ -267,8 +267,8 @@ class eco_system:
             for dr in self.deer_list:
                 dr.marked = False
             # still in the evolution loop
-
-            image=plt.imshow(our_eco_system.occupication_matrix,interpolation="none",cmap=cmap,norm=norm)
+            clf()
+            image=imshow(self.occupication_matrix,interpolation="none",cmap=cmap,norm=norm)
 	    
 
 	return deernum, wolfnum, timenum
@@ -280,7 +280,7 @@ class eco_system:
 def init():
 	plt.title("Predator-Prey Ecosystem: Live Feed")
 	
-fig=plt.figure()
+fig = figure(fig.size(7,7))
 our_eco_system=eco_system(1200, 900, 100)
 anim = animation.FuncAnimation(fig, our_eco_system.eco_evolution, init_func=init, blit =False)
 plt.show()
