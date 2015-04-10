@@ -99,16 +99,16 @@ class eco_system:
         self.N = grid_size
         self.n_deer = init_number_of_deer
         self.n_wolf = init_number_of_wolf
-        self.occupication_matrix = zeros((self.N, self.N))
+        self.occupation_matrix = zeros((self.N, self.N))
         
         #lists of deer and wolf
         self.deer_list = []
         self.wolf_list = []
         
         self.deer_starve = 1e10
-        self.deer_rep = 5
+        self.deer_rep = 10 	# 5
         self.wolf_starve = 20
-        self.wolf_rep = 60
+        self.wolf_rep = 30 	#60
         
         #initialize the deer list
         for i in range(self.n_deer):
@@ -116,11 +116,11 @@ class eco_system:
             x = randint(0, self.N-1)
             y = randint(0, self.N-1)
             #if occupied, pick up another position until one free location if found
-            while self.occupication_matrix[(x,y)] != 0:
+            while self.occupation_matrix[(x,y)] != 0:
                 x = randint(0, self.N-1)   # for randint, randint(0,4) choose 0,1,2,3,4
                 y = randint(0, self.N-1)
-            #immediately update the occupication matrix
-            self.occupication_matrix[(x,y)] = 1
+            #immediately update the occupation matrix
+            self.occupation_matrix[(x,y)] = 1
             #create a deer at that position and add it to the list
             deer_instance = deer(x, y, self.deer_starve, self.deer_rep)
             self.deer_list.append(deer_instance)
@@ -129,19 +129,20 @@ class eco_system:
         for i in range(self.n_wolf):
             x = randint(0, self.N-1)
             y = randint(0, self.N-1)
-            while self.occupication_matrix[(x,y)] != 0:
+            while self.occupation_matrix[(x,y)] != 0:
                 x = randint(0, self.N-1)
                 y = randint(0, self.N-1)
-            self.occupication_matrix[(x,y)] = 2
+            self.occupation_matrix[(x,y)] = 2
             wolf_instance = wolf(x, y, self.wolf_starve, self.wolf_rep)
             self.wolf_list.append(wolf_instance)
 
     
     #time evolution function (Need lots of work from Fan!!! We can help as well)
-    def eco_evolution(self, total_time_steps):
-        self.totaltimesteps = 1
-        #self.totaltimesteps = total_time_steps
-        #add a lot of things here
+    #def eco_evolution(self, deer_count, wolf_count, time_count):
+    def eco_evolution(self,total_time_steps,deer_count,wolf_count,time_count):
+      # While loop is not necessary, but it may be nice to stop the graph at a certain number of iterations. (David)
+      #while self.t <=1000:
+	self.totaltimesteps = 1
         '''
         should return three lists: the number of deers at that time, the number of wolves at that time, and time
         deernum[] wolfnum[] timenum[]
@@ -155,7 +156,8 @@ class eco_system:
         cmap=matplotlib.colors.ListedColormap(['white','blue','red'])
         bounds=[-.5,.5,1.5,2.5]
         norm= matplotlib.colors.BoundaryNorm(bounds,cmap.N) 
-        for t in range(self.totaltimesteps):
+        for t in range(1):
+	#for t in range(self.totaltimesteps):
             self.t += 1 # after each evolution, time ++
             # first, check the status of wolves
             # wolf and deer aging and dying loop/ these are done first as they change the number and indexing of the list which may caused sutble bugs...
@@ -169,7 +171,7 @@ class eco_system:
                     wolf_temp_list.append(thiswolf)
                 else:
                     print "killed"
-                    self.occupication_matrix[thiswolf.present_position] = 0
+                    self.occupation_matrix[thiswolf.present_position] = 0
             self.wolf_list = wolf_temp_list
             
             #aging and clear wolf list complished!
@@ -181,7 +183,7 @@ class eco_system:
                 if thisdeer.starve() == "live":
                     deer_temp_list.append(thisdeer)
                 else:
-                    self.occupication_matrix[thisdeer.present_position] = 0
+                    self.occupation_matrix[thisdeer.present_position] = 0
             self.deer_list = deer_temp_list
             #aging and clear deer list complished!
             
@@ -198,8 +200,8 @@ class eco_system:
                 deernb = []  #deer neighbors of this wolf
                 wolfnb = []  #wolf neighbors of this deer
                 for k in range(4): # check whether there are deer/wolf neighbors around the wolf, add their positions to the deer/wolf neighbor list
-                    if self.occupication_matrix[neighbor[k]] == 1: deernb.append(neighbor[k])
-                    if self.occupication_matrix[neighbor[k]] == 2: wolfnb.append(neighbor[k])
+                    if self.occupation_matrix[neighbor[k]] == 1: deernb.append(neighbor[k])
+                    if self.occupation_matrix[neighbor[k]] == 2: wolfnb.append(neighbor[k])
 
                 #__Two situation of wolf move___
                 thiswolf.old_position = thiswolf.present_position
@@ -210,8 +212,8 @@ class eco_system:
                     deerpos = choice(deernb)
                     thiswolf.age_starve = 0   # after eating, reset its age_starve
                     thiswolf.present_position = deerpos
-                self.occupication_matrix[thiswolf.old_position] = 0
-                self.occupication_matrix[thiswolf.present_position] = 2
+                self.occupation_matrix[thiswolf.old_position] = 0
+                self.occupation_matrix[thiswolf.present_position] = 2
 
                 #if it deposite a new one behind (only when the wolf have some where to move)
                 if thiswolf.check_breed() == "mature" and thiswolf.old_position != thiswolf.present_position:
@@ -220,7 +222,7 @@ class eco_system:
                     y = newpos[1]
                     newwolf = wolf(x, y, self.wolf_starve, self.wolf_rep)
                     new_born_wolf_list.append(newwolf)
-                    self.occupication_matrix[thiswolf.old_position] = 2
+                    self.occupation_matrix[thiswolf.old_position] = 2
                     thiswolf.age_rep = 0
             #merge newborn wolf list with the original wolf list
             self.wolf_list = self.wolf_list + new_born_wolf_list
@@ -228,7 +230,7 @@ class eco_system:
             #___DEER_eaten_clear_loop
             temp_deer_list = []
             for thisdeer in self.deer_list:
-                if self.occupication_matrix[thisdeer.present_position] == 1: #If it is not captured by a wolf
+                if self.occupation_matrix[thisdeer.present_position] == 1: #If it is not captured by a wolf
                     temp_deer_list.append(thisdeer)
             self.deer_list = temp_deer_list
 
@@ -237,13 +239,13 @@ class eco_system:
             for thisdeer in self.deer_list:
                 i, j = thisdeer.present_position
                 neighbor = [((i-1)%self.N,j), ((i+1)%self.N,j), (i,(j+1)%self.N), (i,(j-1)%self.N)]
-                availablenb = [n for n in neighbor if self.occupication_matrix[(n[0], n[1])] == 0]
+                availablenb = [n for n in neighbor if self.occupation_matrix[(n[0], n[1])] == 0]
                 # check whether there are available positions for deer to move
                 thisdeer.old_position = thisdeer.present_position
                 if len(availablenb) > 0:
                     thisdeer.present_position = choice(availablenb)
-                self.occupication_matrix[thisdeer.old_position] = 0
-                self.occupication_matrix[thisdeer.present_position] = 1
+                self.occupation_matrix[thisdeer.old_position] = 0
+                self.occupation_matrix[thisdeer.present_position] = 1
                 
                 if thisdeer.check_breed() == "mature" and thisdeer.old_position != thisdeer.present_position:
                     newpos = thisdeer.old_position
@@ -251,7 +253,7 @@ class eco_system:
                     y = newpos[1]
                     newdeer = deer(x, y, self.deer_starve, self.deer_rep)
                     new_born_deer_list.append(newdeer)
-                    self.occupication_matrix[thisdeer.old_position] = 1
+                    self.occupation_matrix[thisdeer.old_position] = 1
                     thisdeer.age_rep = 0
             self.deer_list = self.deer_list + new_born_deer_list
                 
@@ -267,30 +269,49 @@ class eco_system:
             for dr in self.deer_list:
                 dr.marked = False
             # still in the evolution loop
-            clf()
-            image=imshow(self.occupication_matrix,interpolation="none",cmap=cmap,norm=norm)
 	    
+	    # Show 2D animation/figure
+            fig.clf()											# Clear the previous figure (makes faster)
+	    plt.title("Predator-Prey Ecosystem: Live Feed \nRed: Predator \nBlue: Prey")		# Figure Title
+	    image=imshow(self.occupation_matrix,interpolation="nearest",cmap=cmap,norm=norm)		# Display 2D grid/environment
+	    
+	    deer_count.append(deer_num)									# Append deer count for iteration (used for population plot)
+	    wolf_count.append(wolf_num)									# Append deer count for iteration (used for population plot)
+	    time_count.append(self.t)									# Append deer count for iteration (used for population plot)
+	    return anim
 
-	return deernum, wolfnum, timenum
+
+######## Function Needed for Animation #######
+def init():
+        plt.title("Predator-Prey Ecosystem: Live Feed")
 
 
 #__________Main_function_________
 #testing
 
-def init():
-	plt.title("Predator-Prey Ecosystem: Live Feed")
-	
-fig = figure(fig.size(7,7))
-our_eco_system=eco_system(1200, 900, 100)
-anim = animation.FuncAnimation(fig, our_eco_system.eco_evolution, init_func=init, blit =False)
+
+#Initialize storage of ecosystem population information
+deer_count=[]
+wolf_count=[]
+time_count=[]
+
+#Initialize figure
+fig = plt.figure()
+
+#Initialize ecosystem (# of deer, # of wolves, grid size)
+our_eco_system=eco_system(1200, 1000, 100)
+
+#Function animation function calls the ecosystem evolution function continuously and displays the 2D environment
+anim= animation.FuncAnimation(fig,our_eco_system.eco_evolution,100,fargs=(deer_count,wolf_count,time_count),init_func=init,save_count=105,interval=1,blit=False)
+#anim= animation.FuncAnimation(fig,our_eco_system.eco_evolution,fargs=(deer_count,wolf_count,time_count),init_func=init,save_count=105,interval=1,blit=False)
 plt.show()
-#our_eco_system = eco_system(100, 20, 100)
 
-#deernum, wolfnum, timenum = our_eco_system.eco_evolution(1000)
-
-plot(timenum, wolfnum, "r", linewidth = 3, label = "wolf population")
-plot(timenum, deernum, "b", linewidth = 3, label = "deer population")
+plot(time_count, wolf_count, "r", linewidth = 3, label = "Wolf population")
+plot(time_count, deer_count, "b", linewidth = 3, label = "Deer population")
 legend(loc = "upper right", fontsize = 20)
+title("Ecosystem Population Evolution Through Time")
+xlabel("Evolution of Time")
+ylabel("Population (# of Animals)")
 
 show()
 
