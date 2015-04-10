@@ -272,9 +272,12 @@ class eco_system:
 	    
 	    # Show 2D animation/figure
             fig.clf()											# Clear the previous figure (makes faster)
-	    plt.title("Predator-Prey Ecosystem: Live Feed \nRed: Predator \nBlue: Prey")		# Figure Title
+	    plt.title("Predator-Prey Ecosystem: Live Feed \nRed: Predator ; Blue: Prey")		# Figure Title
 	    image=imshow(self.occupation_matrix,interpolation="nearest",cmap=cmap,norm=norm)		# Display 2D grid/environment
 	    
+	    # Save snapshots of 2D environment
+	    if (self.t == 1) or (self.t % 50)==0:							# If the first iteration or every 50, save
+		plt.savefig("pics/ecosystem_snapshot_%i.png" %(self.t)) 				# Save in pics/ directory
 	    deer_count.append(deer_num)									# Append deer count for iteration (used for population plot)
 	    wolf_count.append(wolf_num)									# Append deer count for iteration (used for population plot)
 	    time_count.append(self.t)									# Append deer count for iteration (used for population plot)
@@ -302,8 +305,7 @@ fig = plt.figure()
 our_eco_system=eco_system(1200, 1000, 100)
 
 #Function animation function calls the ecosystem evolution function continuously and displays the 2D environment
-anim= animation.FuncAnimation(fig,our_eco_system.eco_evolution,100,fargs=(deer_count,wolf_count,time_count),init_func=init,save_count=105,interval=1,blit=False)
-#anim= animation.FuncAnimation(fig,our_eco_system.eco_evolution,fargs=(deer_count,wolf_count,time_count),init_func=init,save_count=105,interval=1,blit=False)
+anim= animation.FuncAnimation(fig,our_eco_system.eco_evolution,100,fargs=(deer_count,wolf_count,time_count),init_func=init,interval=1,blit=False)
 plt.show()
 
 plot(time_count, wolf_count, "r", linewidth = 3, label = "Wolf population")
