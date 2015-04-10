@@ -31,6 +31,8 @@ from pylab import *
 from random import *
 import numpy as np
 import matplotlib.animation as animation
+from mpl_toolkits.mplot3d import Axes3D
+from matplotlib import pyplot as plt
 
 #Class definition
 #1. Animal Class: contains the common features of deer and wolf
