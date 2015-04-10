@@ -124,8 +124,8 @@ class eco_system:
             a[i]=randint(5,15)
             b[i]=randint(5,15)
             c[i]=randint(5,15)
-                while c[i]<=b[i]:
-                    c[i]=randint(5,15)
+            while c[i]<=b[i]:
+                c[i]=randint(5,15)
             self.deer_starve = 1e10
             self.deer_rep = a[i]
             self.wolf_starve = b[i]
