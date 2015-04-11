@@ -362,10 +362,10 @@ for i in range(0,10):
 	
 #Function animation function calls the ecosystem evolution function continuously and displays the 2D environment
 	animation.FuncAnimation.frames=0
-	anim= animation.FuncAnimation(fig,our_eco_system.eco_evolution,300,fargs=(deer_count,wolf_count,time_count),init_func=init,interval=1,blit=False,repeat=False)
+	anim= animation.FuncAnimation(fig,our_eco_system.eco_evolution,100,fargs=(deer_count,wolf_count,time_count),init_func=init,interval=1,blit=False,repeat=False)
 	plt.show()
-	plt.close()
-	if wolf_count[299] == 0 or deer_count[299] == 0:
+	plt.close(fig)
+	if wolf_count[99] == 0 or deer_count[99] == 0:
         	red_a.append(a[i])
                 red_b.append(b[i])
                 red_c.append(c[i])
@@ -393,8 +393,8 @@ for i in range(0,10):
 fig = plt.figure(figsize=(15,15))
 ax = fig.add_subplot(111, projection='3d')
 
-ax.scatter(red_a, red_b, red_c, marker='o', color='red', s=red_ratio_dw, label='extinction or unstable')
-ax.scatter(blue_a, blue_b, blue_c, marker='o', color='blue', s=blue_ratio_dw, label='stable')
+ax.scatter(red_a, red_b, red_c, marker='x', color='red', s=red_ratio_dw*400, label='extinction or unstable')
+ax.scatter(blue_a, blue_b, blue_c, marker='x', color='blue', s=blue_ratio_dw*400, label='stable')
 
 ax.set_xlabel('Deer reproduction age')
 ax.set_ylabel('Wolf starvation age')
@@ -403,6 +403,22 @@ ax.set_zlabel('Wolf redproduction age')
 plt.title('Parameter space')
      
 plt.show()
+
+print "Wolf initial: ", w
+print "Deer initial: ", d
+
+print "Red a:", red_a
+print "Red b:", red_b
+print "Red c:", red_c
+print "Red diff_dw:", red_diff_dw
+print "Red ratio_dw:", red_ratio_dw
+        
+print "Blue a:", blue_a
+print "Blue b:", blue_b
+print "Blue c:", blue_c
+print "Blue diff_dw:", blue_diff_dw
+print "Blue ratio_dw:", blue_ratio_dw
+
 
 #plot(red_d,red_w, 'r*',label="extinction or unstable")
 #plot(blue_d,blue_w, 'b*',label="stable")
