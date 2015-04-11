@@ -166,6 +166,7 @@ class eco_system:
     #def eco_evolution(self, deer_count, wolf_count, time_count):
     def eco_evolution(self,total_time_steps,deer_count,wolf_count,time_count):
       # While loop is not necessary, but it may be nice to stop the graph at a certain number of iterations. (David)
+        print "in loop"
       #while self.t <=300:
 	self.totaltimesteps = 1
         '''
@@ -311,7 +312,6 @@ class eco_system:
 
 ######## Function Needed for Animation #######
 def init():
-	
         plt.title("Predator-Prey Ecosystem: Live Feed")
 
 
@@ -328,19 +328,21 @@ def init():
 #fig = plt.figure()
 
 #Initialize ecosystem (# of deer, # of wolves, grid size)
-plt.ion()
+#plt.ion()
 #for i in range(0,10):
 	#Initialize storage of ecosystem population information
 #	deer_count=[]
 #	wolf_count=[]
 #	time_count=[]
 for i in range(0,10):
-    w[i]=randint(500,2500)
-    d[i]=randint(500,2500)
+        deer_count=[]
+        wolf_count=[]
+        time_count=[]
+	w[i]=randint(500,2500)
+        d[i]=randint(500,2500)
 
-    our_eco_system=eco_system(10, 5, 10, d[i], w[i], 100)	
-	#Initialize figure
-#	fig = plt.figure()
+        our_eco_system=eco_system(10, 5, 10, d[i], w[i], 100)	
+	fig = plt.figure()
 #	a[i]=randint(5,15)
 #   	b[i]=randint(5,15)
 #    	c[i]=randint(5,15)
