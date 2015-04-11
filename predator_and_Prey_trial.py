@@ -90,6 +90,19 @@ class wolf(animal):
     def update(self):
         #add something here ...
         return
+#Defining matrices for parameters:
+a=[0.0]*10
+b=[0.0]*10
+c=[0.0]*10
+
+red_a=[]
+red_b=[]
+red_c=[]
+
+blue_a=[]
+blue_b=[]
+blue_c=[]
+
 
 #________________Eco_system class________________________________
 # it contains the lists of animals, a matrix recording the position of the animals (0: nothing, 1: deer, 2: wolf) and all the statistical data such as the number of deer and wolf ...
