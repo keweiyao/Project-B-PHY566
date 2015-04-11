@@ -120,7 +120,6 @@ class eco_system:
         self.deer_list = []
         self.wolf_list = []
         
-<<<<<<< Updated upstream
         self.deer_starve = 1e10
         self.deer_rep = deer_rep_age 	# 5
         self.wolf_starve = wolf_starve_age
@@ -140,51 +139,24 @@ class eco_system:
             #create a deer at that position and add it to the list
             deer_instance = deer(x, y, self.deer_starve, self.deer_rep)
             self.deer_list.append(deer_instance)
-=======
-        for i in range(0,10):
-            a[i]=randint(5,15)
-            b[i]=randint(5,15)
-            c[i]=randint(5,15)
-            while c[i]<=b[i]:
-                c[i]=randint(5,15)
-            self.deer_starve = 1e10
-            self.deer_rep = a[i]
-            self.wolf_starve = b[i]
-            self.wolf_rep = c[i]
- 
-            #initialize the deer list
-            for i in range(self.n_deer):
-               #pick up a random position and check whether it is occupied.
-               x = randint(0, self.N-1)
-               y = randint(0, self.N-1)
-               #if occupied, pick up another position until one free location if found
-               while self.occupation_matrix[(x,y)] != 0:
-                  x = randint(0, self.N-1)   # for randint, randint(0,4) choose 0,1,2,3,4
-                  y = randint(0, self.N-1)
-               #immediately update the occupation matrix
-               self.occupation_matrix[(x,y)] = 1
-               #create a deer at that position and add it to the list
-               deer_instance = deer(x, y, self.deer_starve, self.deer_rep)
-               self.deer_list.append(deer_instance)
->>>>>>> Stashed changes
         
-            #initialize the wolf list, same thing done as for deer
-            for i in range(self.n_wolf):
-              x = randint(0, self.N-1)
-              y = randint(0, self.N-1)
-              while self.occupation_matrix[(x,y)] != 0:
+        #initialize the wolf list, same thing done as for deer
+        for i in range(self.n_wolf):
+            x = randint(0, self.N-1)
+            y = randint(0, self.N-1)
+            while self.occupation_matrix[(x,y)] != 0:
                 x = randint(0, self.N-1)
                 y = randint(0, self.N-1)
-              self.occupation_matrix[(x,y)] = 2
-              wolf_instance = wolf(x, y, self.wolf_starve, self.wolf_rep)
-              self.wolf_list.append(wolf_instance)
+            self.occupation_matrix[(x,y)] = 2
+            wolf_instance = wolf(x, y, self.wolf_starve, self.wolf_rep)
+            self.wolf_list.append(wolf_instance)
 
     
     #time evolution function (Need lots of work from Fan!!! We can help as well)
     #def eco_evolution(self, deer_count, wolf_count, time_count):
     def eco_evolution(self,total_time_steps,deer_count,wolf_count,time_count):
       # While loop is not necessary, but it may be nice to stop the graph at a certain number of iterations. (David)
-      #while self.t <=1000:
+      #while self.t <=300:
 	self.totaltimesteps = 1
         '''
         should return three lists: the number of deers at that time, the number of wolves at that time, and time
@@ -319,8 +291,8 @@ class eco_system:
 	    image=imshow(self.occupation_matrix,interpolation="nearest",cmap=cmap,norm=norm)		# Display 2D grid/environment
 	    
 	    # Save snapshots of 2D environment
-	    if (self.t == 1) or (self.t % 50)==0:							# If the first iteration or every 50, save
-		plt.savefig("pics/ecosystem_snapshot_%i.png" %(self.t)) 				# Save in pics/ directory
+	    #if (self.t == 1) or (self.t % 50)==0:							# If the first iteration or every 50, save
+		#plt.savefig("pics/ecosystem_snapshot_%i.png" %(self.t)) 				# Save in pics/ directory
 	    deer_count.append(deer_num)									# Append deer count for iteration (used for population plot)
 	    wolf_count.append(wolf_num)									# Append deer count for iteration (used for population plot)
 	    time_count.append(self.t)									# Append deer count for iteration (used for population plot)
@@ -329,6 +301,7 @@ class eco_system:
 
 ######## Function Needed for Animation #######
 def init():
+	
         plt.title("Predator-Prey Ecosystem: Live Feed")
 
 
@@ -337,15 +310,23 @@ def init():
 
 
 #Initialize storage of ecosystem population information
-deer_count=[]
-wolf_count=[]
-time_count=[]
+#deer_count=[]
+#wolf_count=[]
+#time_count=[]
 
 #Initialize figure
-fig = plt.figure()
+#fig = plt.figure()
 
 #Initialize ecosystem (# of deer, # of wolves, grid size)
+plt.ion()
 for i in range(0,10):
+	#Initialize storage of ecosystem population information
+	deer_count=[]
+	wolf_count=[]
+	time_count=[]
+	
+	#Initialize figure
+	fig = plt.figure()
 	a[i]=randint(5,15)
    	b[i]=randint(5,15)
     	c[i]=randint(5,15)
@@ -356,18 +337,20 @@ for i in range(0,10):
         	
 	our_eco_system=eco_system(a[i],b[i],c[i],1200, 1000, 100)
 	
-	if wolfnum[300] == 0 or deernum[300] == 0:
-        	red_a.append(a[i])
-        	red_b.append(b[i])
-        	red_c.append(c[i])
-    	else:
-        	blue_a.append(a[i])
-        	blue_b.append(b[i])
-        	blue_c.append(c[i])
-        
 #Function animation function calls the ecosystem evolution function continuously and displays the 2D environment
-	anim= animation.FuncAnimation(fig,our_eco_system.eco_evolution,100,fargs=(deer_count,wolf_count,time_count),init_func=init,interval=1,blit=False,repeat=False)
+	animation.FuncAnimation.frames=0
+	anim= animation.FuncAnimation(fig,our_eco_system.eco_evolution,300,fargs=(deer_count,wolf_count,time_count),init_func=init,interval=1,blit=False,repeat=False)
 	plt.show()
+	plt.close()
+        if wolf_count[299] == 0 or deer_count[299] == 0:
+                red_a.append(a[i])
+                red_b.append(b[i])
+                red_c.append(c[i])
+        else:
+                blue_a.append(a[i])
+                blue_b.append(b[i])
+                blue_c.append(c[i])
+
 
 	plot(time_count, wolf_count, "r", linewidth = 3, label = "Wolf population")
 	plot(time_count, deer_count, "b", linewidth = 3, label = "Deer population")
