@@ -114,6 +114,17 @@ red_d=[]
 blue_w=[]
 blue_d=[]
 
+###
+
+diff_dw=[0.0]*10
+ratio_dw=[0.0]*10
+
+red_diff_dw=[]
+red_ratio_dw=[]
+
+blue_diff_dw=[]
+blue_ratio_dw=[]
+
 #________________Eco_system class________________________________
 # it contains the lists of animals, a matrix recording the position of the animals (0: nothing, 1: deer, 2: wolf) and all the statistical data such as the number of deer and wolf ...
 class eco_system:
@@ -329,29 +340,25 @@ def init():
 
 #Initialize ecosystem (# of deer, # of wolves, grid size)
 #plt.ion()
-#for i in range(0,10):
-	#Initialize storage of ecosystem population information
-#	deer_count=[]
-#	wolf_count=[]
-#	time_count=[]
+
 for i in range(0,10):
         deer_count=[]
         wolf_count=[]
         time_count=[]
-	w[i]=randint(500,2500)
+        a[i]=randint(5,15)
+  	b[i]=randint(5,15)
+    	c[i]=randint(5,15)
+    	while c[i]<=b[i]:
+	       	c[i]=randint(5,15)
         d[i]=randint(500,2500)
-
-        our_eco_system=eco_system(10, 5, 10, d[i], w[i], 100)	
+        w[i]=randint(500,2500)
+        diff_dw[i]=d[i]-w[i]
+        ratio_dw[i]=(float(d[i])/w[i])
+	print a[i], b[i], c[i], d[i], w[i]
+	print diff_dw[i],ratio_dw[i]
+	
+        our_eco_system=eco_system(a[i], b[i], c[i], d[i], w[i], 100)	
 	fig = plt.figure()
-#	a[i]=randint(5,15)
-#   	b[i]=randint(5,15)
-#    	c[i]=randint(5,15)
-#    	print a[i], b[i], c[i]
-    	
-#    	while c[i]<=b[i]:
-#        	c[i]=randint(5,15)
-        	
-#	our_eco_system=eco_system(a[i],b[i],c[i],1200, 1000, 100)
 	
 #Function animation function calls the ecosystem evolution function continuously and displays the 2D environment
 	animation.FuncAnimation.frames=0
@@ -359,21 +366,18 @@ for i in range(0,10):
 	plt.show()
 	plt.close()
 	if wolf_count[299] == 0 or deer_count[299] == 0:
-        	red_w.append(w[i])
-        	red_d.append(d[i])
+        	red_a.append(a[i])
+                red_b.append(b[i])
+                red_c.append(c[i])
+        	red_diff_dw.append(diff_dw[i])
+        	red_ratio_dw.append(ratio_dw[i])
         else:
-        	blue_w.append(w[i])
-        	blue_d.append(d[i])
-        	
-#        if wolf_count[299] == 0 or deer_count[299] == 0:
- #               red_a.append(a[i])
-  #              red_b.append(b[i])
-   #             red_c.append(c[i])
-    #    else:
-    #            blue_a.append(a[i])
-    #            blue_b.append(b[i])
-    #            blue_c.append(c[i])
-
+        	blue_a.append(a[i])
+                blue_b.append(b[i])
+                blue_c.append(c[i])
+        	blue_diff_dw.append(diff_dw[i])
+        	blue_ratio_dw.append(ratio_dw[i])
+      
 
 	plot(time_count, wolf_count, "r", linewidth = 3, label = "Wolf population")
 	plot(time_count, deer_count, "b", linewidth = 3, label = "Deer population")
@@ -386,24 +390,24 @@ for i in range(0,10):
 
 #### plotting of parameter space:
 
-#fig = plt.figure(figsize=(15,15))
-#ax = fig.add_subplot(111, projection='3d')
+fig = plt.figure(figsize=(15,15))
+ax = fig.add_subplot(111, projection='3d')
 
-#ax.scatter(red_a, red_b, red_c, marker='x', color='red', s=40, label='extinction or unstable')
-#ax.scatter(blue_a, blue_b, blue_c, marker='x', color='blue', s=40, label='stable')
+ax.scatter(red_a, red_b, red_c, marker='o', color='red', s=red_ratio_dw, label='extinction or unstable')
+ax.scatter(blue_a, blue_b, blue_c, marker='o', color='blue', s=blue_ratio_dw, label='stable')
 
-#ax.set_xlabel('Deer reproduction age')
-#ax.set_ylabel('Wolf starvation age')
-#ax.set_zlabel('Wolf redproduction age')
+ax.set_xlabel('Deer reproduction age')
+ax.set_ylabel('Wolf starvation age')
+ax.set_zlabel('Wolf redproduction age')
 
-#plt.title('Parameter space')
+plt.title('Parameter space')
      
-#plt.show()
+plt.show()
 
-plot(red_d,red_w, 'r*',label="extinction or unstable")
-plot(blue_d,blue_w, 'b*',label="stable")
-plt.legend(loc='upper right')
-plt.xlabel('Initial number of Deer')
-plt.ylabel('Initial number of Wolf')
-plt.title('Initial Number Parameter space')
-plt.savefig("Init_Number_Parameter_space.png")
+#plot(red_d,red_w, 'r*',label="extinction or unstable")
+#plot(blue_d,blue_w, 'b*',label="stable")
+#plt.legend(loc='upper right')
+#plt.xlabel('Initial number of Deer')
+#plt.ylabel('Initial number of Wolf')
+#plt.title('Initial Number Parameter space')
+#plt.savefig("Init_Number_Parameter_space.png")
