@@ -103,6 +103,16 @@ blue_a=[]
 blue_b=[]
 blue_c=[]
 
+####
+
+w=[0.0]*10
+d=[0.0]*10
+
+red_w=[]
+red_d=[]
+
+blue_w=[]
+blue_d=[]
 
 #________________Eco_system class________________________________
 # it contains the lists of animals, a matrix recording the position of the animals (0: nothing, 1: deer, 2: wolf) and all the statistical data such as the number of deer and wolf ...
@@ -319,37 +329,48 @@ def init():
 
 #Initialize ecosystem (# of deer, # of wolves, grid size)
 plt.ion()
-for i in range(0,10):
+#for i in range(0,10):
 	#Initialize storage of ecosystem population information
-	deer_count=[]
-	wolf_count=[]
-	time_count=[]
-	
+#	deer_count=[]
+#	wolf_count=[]
+#	time_count=[]
+for i in range(0,10):
+    w[i]=randint(500,2500)
+    d[i]=randint(500,2500)
+
+    our_eco_system=eco_system(10, 5, 10, d[i], w[i], 100)	
 	#Initialize figure
-	fig = plt.figure()
-	a[i]=randint(5,15)
-   	b[i]=randint(5,15)
-    	c[i]=randint(5,15)
-    	print a[i], b[i], c[i]
+#	fig = plt.figure()
+#	a[i]=randint(5,15)
+#   	b[i]=randint(5,15)
+#    	c[i]=randint(5,15)
+#    	print a[i], b[i], c[i]
     	
-    	while c[i]<=b[i]:
-        	c[i]=randint(5,15)
+#    	while c[i]<=b[i]:
+#        	c[i]=randint(5,15)
         	
-	our_eco_system=eco_system(a[i],b[i],c[i],1200, 1000, 100)
+#	our_eco_system=eco_system(a[i],b[i],c[i],1200, 1000, 100)
 	
 #Function animation function calls the ecosystem evolution function continuously and displays the 2D environment
 	animation.FuncAnimation.frames=0
 	anim= animation.FuncAnimation(fig,our_eco_system.eco_evolution,300,fargs=(deer_count,wolf_count,time_count),init_func=init,interval=1,blit=False,repeat=False)
 	plt.show()
 	plt.close()
-        if wolf_count[299] == 0 or deer_count[299] == 0:
-                red_a.append(a[i])
-                red_b.append(b[i])
-                red_c.append(c[i])
+	if wolf_count[299] == 0 or deer_count[299] == 0:
+        	red_w.append(w[i])
+        	red_d.append(d[i])
         else:
-                blue_a.append(a[i])
-                blue_b.append(b[i])
-                blue_c.append(c[i])
+        	blue_w.append(w[i])
+        	blue_d.append(d[i])
+        	
+#        if wolf_count[299] == 0 or deer_count[299] == 0:
+ #               red_a.append(a[i])
+  #              red_b.append(b[i])
+   #             red_c.append(c[i])
+    #    else:
+    #            blue_a.append(a[i])
+    #            blue_b.append(b[i])
+    #            blue_c.append(c[i])
 
 
 	plot(time_count, wolf_count, "r", linewidth = 3, label = "Wolf population")
@@ -363,16 +384,24 @@ for i in range(0,10):
 
 #### plotting of parameter space:
 
-fig = plt.figure(figsize=(15,15))
-ax = fig.add_subplot(111, projection='3d')
+#fig = plt.figure(figsize=(15,15))
+#ax = fig.add_subplot(111, projection='3d')
 
-ax.scatter(red_a, red_b, red_c, marker='x', color='red', s=40, label='extinction or unstable')
-ax.scatter(blue_a, blue_b, blue_c, marker='x', color='blue', s=40, label='stable')
+#ax.scatter(red_a, red_b, red_c, marker='x', color='red', s=40, label='extinction or unstable')
+#ax.scatter(blue_a, blue_b, blue_c, marker='x', color='blue', s=40, label='stable')
 
-ax.set_xlabel('Deer reproduction age')
-ax.set_ylabel('Wolf starvation age')
-ax.set_zlabel('Wolf redproduction age')
+#ax.set_xlabel('Deer reproduction age')
+#ax.set_ylabel('Wolf starvation age')
+#ax.set_zlabel('Wolf redproduction age')
 
-plt.title('Parameter space')
+#plt.title('Parameter space')
      
-plt.show()
+#plt.show()
+
+plot(red_d,red_w, 'r*',label="extinction or unstable")
+plot(blue_d,blue_w, 'b*',label="stable")
+plt.legend(loc='upper right')
+plt.xlabel('Initial number of Deer')
+plt.ylabel('Initial number of Wolf')
+plt.title('Initial Number Parameter space')
+plt.savefig("Init_Number_Parameter_space.png")
