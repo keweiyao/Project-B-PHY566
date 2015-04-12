@@ -25,7 +25,7 @@ Computationally:
     Step1: deer walk and breed with new deer at the old position
     Step2: wolves hunt and breed and move
 """
-
+import time
 from scipy import *
 from pylab import *
 from random import *
@@ -42,8 +42,8 @@ class animal:
     def __init__(self,  i, j, starve_age,  reproduction_age):
         self.old_position = (i, j)      # initialize the old position with i and j
         self.present_position = (i, j)  # initialize the present positon with i and j
-        self.age_rep = 0  # setting procreation age
-        self.age_starve = 0    # setting starve age
+	self.age_rep = randint(0,int(reproduction_age))  # setting procreation age
+        self.age_starve = randint(0,int(starve_age))    # setting starve age
         self.breedage = reproduction_age
         self.starveage = starve_age
         self.living_status = "live"     # setting live status of the animal "live"/"dead", each time when we loop over
@@ -91,9 +91,14 @@ class wolf(animal):
         #add something here ...
         return
 #Defining matrices for parameters:
-a=[0.0]*10
-b=[0.0]*10
-c=[0.0]*10
+iterations=100
+#a=[0.0]*iterations
+#b=[0.0]*iterations
+#c=[0.0]*iterations
+a=[]
+b=[]
+c=[]
+
 
 red_a=[]
 red_b=[]
@@ -105,8 +110,14 @@ blue_c=[]
 
 ####
 
-w=[0.0]*10
-d=[0.0]*10
+final_wolf=[]
+final_deer=[]
+
+w=[]
+d=[]
+
+#w=[0.0]*iterations
+#d=[0.0]*iterations
 
 red_w=[]
 red_d=[]
@@ -116,8 +127,11 @@ blue_d=[]
 
 ###
 
-diff_dw=[0.0]*10
-ratio_dw=[0.0]*10
+diff_dw=[]
+ratio_dw=[]
+
+#diff_dw=[0.0]*iterations
+#ratio_dw=[0.0]*iterations
 
 red_diff_dw=[]
 red_ratio_dw=[]
@@ -176,9 +190,9 @@ class eco_system:
     #time evolution function (Need lots of work from Fan!!! We can help as well)
     #def eco_evolution(self, deer_count, wolf_count, time_count):
     def eco_evolution(self,total_time_steps,deer_count,wolf_count,time_count):
-      # While loop is not necessary, but it may be nice to stop the graph at a certain number of iterations. (David)
-        print "in loop"
-      #while self.t <=300:
+      print "eco ev" 
+        # While loop is not necessary, but it may be nice to stop the graph at a certain number of iterations. (David)
+      while self.t <=total_time_steps: # TAKE THIS LINE OUT WHEN USING ANIMATION
 	self.totaltimesteps = 1
         '''
         should return three lists: the number of deers at that time, the number of wolves at that time, and time
@@ -308,18 +322,20 @@ class eco_system:
             # still in the evolution loop
 	    
 	    # Show 2D animation/figure
-            fig.clf()											# Clear the previous figure (makes faster)
-	    plt.title("Predator-Prey Ecosystem: Live Feed \nRed: Predator ; Blue: Prey")		# Figure Title
-	    image=imshow(self.occupation_matrix,interpolation="nearest",cmap=cmap,norm=norm)		# Display 2D grid/environment
-	    
+            # FOR ANIMATION fig.clf()											# Clear the previous figure (makes faster)
+	    #FOR ANIMATION plt.title("Predator-Prey Ecosystem: Live Feed \nRed: Predator ; Blue: Prey")		# Figure Title
+	    #FOR ANIMATION image=imshow(self.occupation_matrix,interpolation="nearest",cmap=cmap,norm=norm)		# Display 2D grid/environment
+	    #if self.t == 100:
+	    #	plt.close()
+	    #	print "closed"
 	    # Save snapshots of 2D environment
 	    #if (self.t == 1) or (self.t % 50)==0:							# If the first iteration or every 50, save
 		#plt.savefig("pics/ecosystem_snapshot_%i.png" %(self.t)) 				# Save in pics/ directory
 	    deer_count.append(deer_num)									# Append deer count for iteration (used for population plot)
 	    wolf_count.append(wolf_num)									# Append deer count for iteration (used for population plot)
 	    time_count.append(self.t)									# Append deer count for iteration (used for population plot)
-	    return anim
-
+	    # FOR ANIMATION return anim
+      #return 
 
 ######## Function Needed for Animation #######
 def init():
@@ -339,54 +355,80 @@ def init():
 #fig = plt.figure()
 
 #Initialize ecosystem (# of deer, # of wolves, grid size)
-#plt.ion()
+plt.ion()
 
-for i in range(0,10):
+for i in range(0,iterations):
         deer_count=[]
         wolf_count=[]
         time_count=[]
-        a[i]=randint(5,15)
-  	b[i]=randint(5,15)
-    	c[i]=randint(5,15)
+        a.append(randint(5,15))
+        b.append(randint(5,15))
+        c.append(randint(5,15))
+
+	#a[i]=randint(5,15)
+  	#b[i]=randint(5,15)
+    	#c[i]=randint(5,15)
     	while c[i]<=b[i]:
-	       	c[i]=randint(5,15)
-        d[i]=randint(500,2500)
-        w[i]=randint(500,2500)
-        diff_dw[i]=d[i]-w[i]
-        ratio_dw[i]=(float(d[i])/w[i])
+		print c[i],b[i]
+		if b[i] == 15: # i.e the max possible value
+			del b[-1]
+			b.append(randint(5,15))
+		del c[-1]
+		c.append(randint(5,15))
+        
+        
+	d.append(2500)
+	w.append(250)
+	#d.append(randint(500,2500))
+        #w.append(randint(500,2500))
+        diff_dw.append(d[i]-w[i])
+        ratio_dw.append(float(d[i])/w[i])
+
+	#d[i]=randint(500,2500)
+        #w[i]=randint(500,2500)
+        #diff_dw[i]=d[i]-w[i]
+        #ratio_dw[i]=(float(d[i])/w[i])
 	print a[i], b[i], c[i], d[i], w[i]
 	print diff_dw[i],ratio_dw[i]
 	
         our_eco_system=eco_system(a[i], b[i], c[i], d[i], w[i], 100)	
-	fig = plt.figure()
-	
+	# FOR ANIMATION fig = plt.figure()
+	our_eco_system.eco_evolution(300,deer_count,wolf_count,time_count)
 #Function animation function calls the ecosystem evolution function continuously and displays the 2D environment
-	animation.FuncAnimation.frames=0
-	anim= animation.FuncAnimation(fig,our_eco_system.eco_evolution,100,fargs=(deer_count,wolf_count,time_count),init_func=init,interval=1,blit=False,repeat=False)
-	plt.show()
-	plt.close(fig)
-	if wolf_count[99] == 0 or deer_count[99] == 0:
-        	red_a.append(a[i])
+	# FOR ANIMATION animation.FuncAnimation.frames=0
+	# FOR ANIMATION anim= animation.FuncAnimation(fig,lambda: next(our_eco_system.eco_evolution),100,fargs=(deer_count,wolf_count,time_count),init_func=init,interval=1,blit=False,repeat=False)
+	# FOR ANIMATION plt.show()
+	print "about to do append"
+	if wolf_count[300] == 0 or deer_count[300] == 0:
+        	print "wolf_count: ",wolf_count[300]
+		print "deer_count: ",deer_count[300]
+		final_wolf.append(wolf_count[300])
+		final_deer.append(deer_count[300])
+		red_a.append(a[i])
                 red_b.append(b[i])
                 red_c.append(c[i])
         	red_diff_dw.append(diff_dw[i])
         	red_ratio_dw.append(ratio_dw[i])
-        else:
+        	red_d.append(d[i])
+		red_w.append(w[i])
+	else:
         	blue_a.append(a[i])
                 blue_b.append(b[i])
                 blue_c.append(c[i])
         	blue_diff_dw.append(diff_dw[i])
         	blue_ratio_dw.append(ratio_dw[i])
-      
+                blue_d.append(d[i])
+                blue_w.append(w[i])      
 
-	plot(time_count, wolf_count, "r", linewidth = 3, label = "Wolf population")
-	plot(time_count, deer_count, "b", linewidth = 3, label = "Deer population")
-	legend(loc = "upper right", fontsize = 20)
-	title("Ecosystem Population Evolution Through Time")
-	xlabel("Evolution of Time")
-	ylabel("Population (# of Animals)")
+	#fig2 = plt.figure()
+	#plot(time_count, wolf_count, "r", linewidth = 3, label = "Wolf population")
+	#plot(time_count, deer_count, "b", linewidth = 3, label = "Deer population")
+	#legend(loc = "upper right", fontsize = 20)
+	#title("Ecosystem Population Evolution Through Time")
+	#xlabel("Evolution of Time")
+	#ylabel("Population (# of Animals)")
 
-	show()
+	# show()
 
 #### plotting of parameter space:
 
@@ -401,23 +443,32 @@ ax.set_ylabel('Wolf starvation age')
 ax.set_zlabel('Wolf redproduction age')
 
 plt.title('Parameter space')
+plt.savefig("Parameter_space_3D.png")
      
 plt.show()
 
 print "Wolf initial: ", w
 print "Deer initial: ", d
 
+print "Final wolf:",final_wolf
+print "Final deer:",final_deer
+
 print "Red a:", red_a
 print "Red b:", red_b
 print "Red c:", red_c
 print "Red diff_dw:", red_diff_dw
 print "Red ratio_dw:", red_ratio_dw
+print "Red d:", red_d
+print "Red w:", red_w
         
 print "Blue a:", blue_a
 print "Blue b:", blue_b
 print "Blue c:", blue_c
 print "Blue diff_dw:", blue_diff_dw
 print "Blue ratio_dw:", blue_ratio_dw
+print "Blue d:", blue_d
+print "Blue w:", blue_w
+        
 
 
 #plot(red_d,red_w, 'r*',label="extinction or unstable")

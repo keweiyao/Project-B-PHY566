@@ -142,9 +142,7 @@ class eco_system:
     #time evolution function (Need lots of work from Fan!!! We can help as well)
     #def eco_evolution(self, deer_count, wolf_count, time_count):
     def eco_evolution(self,total_time_steps,deer_count,wolf_count,time_count,method):
-      print "eco ev" 
-        # While loop is not necessary, but it may be nice to stop the graph at a certain number of iterations. (David)
-      while self.t <=total_time_steps: # TAKE THIS LINE OUT WHEN USING ANIMATION
+      while self.t <=total_time_steps:
 	self.totaltimesteps = 1
         '''
         should return three lists: the number of deers at that time, the number of wolves at that time, and time
@@ -298,11 +296,12 @@ def init():
 
 
 #__________Main_function_________
-#testing
 
+# Input parameter section
 print "Predator-Prey Ecosystem: \n1) Show Animation (Single parameter) \n2)No Animation (Parameter search)"
 method=raw_input()
 
+# If using animation, input user defined parameters
 if method == "1":
 	print "Enter parameters:"
 	print "Initial number of deer: "
@@ -314,9 +313,10 @@ if method == "1":
 	print "Wolf - Reproduction Age: "
 	wolf_rep=int(raw_input())
 	print "Wolf - Starvation Rate: "
-	wolf_starve=int(raw_input())
+	wolf_st=int(raw_input())
 	iterations=1
 
+# If NOT using animation, scan through parameters randomly, specify the number of trials
 if method == "2":
 	print "Number of iterations to perform:"
 	iterations=int(raw_input())
@@ -327,38 +327,42 @@ print "Performing using method",method,"..."
 
 
 #Defining matrices for parameters:
-#iterations=500
-a=[]
-b=[]
-c=[]
+# Reproduction and starving ages
+deer_rep_age=[]
+wolf_starve=[]
+wolf_rep_age=[]
 
-red_a=[]
-red_b=[]
-red_c=[]
+# Storing parameters which result in unstable system (one or both species die out)
+red_deer_rep_age=[]
+red_wolf_starve=[]
+red_wolf_rep_age=[]
 
-blue_a=[]
-blue_b=[]
-blue_c=[]
+# Storing parameters which result in stable system (no species dying out)
+blue_deer_rep_age=[]
+blue_wolf_starve=[]
+blue_wolf_rep_age=[]
 
-####
+# Storing initial value of deer and wolves 
+init_w=[]
+init_d=[]
 
-w=[]
-d=[]
+# Storing inital value of deer and wolves which result in a species dying out
+red_wolf=[]
+red_deer=[]
 
-red_w=[]
-red_d=[]
+# Storing initial value of deer and wolves which do not result in a species dying out
+blue_wolf=[]
+blue_deer=[]
 
-blue_w=[]
-blue_d=[]
-
-###
-
+# Storing ratio of initial number of deer to wolves
 diff_dw=[]
 ratio_dw=[]
 
+# Storing ratio of initial number of deer to wolves which result in a species dying out
 red_diff_dw=[]
 red_ratio_dw=[]
 
+# Storing ratio of initial number of deer to wolves which do not result in a species dying out
 blue_diff_dw=[]
 blue_ratio_dw=[]
 
@@ -368,7 +372,7 @@ for i in range(0,iterations):
         wolf_count=[]
         time_count=[]
         if method == "1":
-		our_eco_system=eco_system(deer_rep, wolf_starve, wolf_rep, init_deer, init_wolf, 100)
+		our_eco_system=eco_system(deer_rep, wolf_st, wolf_rep, init_deer, init_wolf, 100)
                 fig = plt.figure()
                 animation.FuncAnimation.frames=0
                 anim= animation.FuncAnimation(fig,our_eco_system.eco_evolution,100,fargs=(deer_count,wolf_count,time_count,method),init_func=init,interval=1,blit=
@@ -385,47 +389,44 @@ False,repeat=False)
 
         	show()
 
-
-
 	if method == "2":	
-		a.append(randint(5,15))
-        	b.append(randint(5,15))
-        	c.append(randint(5,15))
+		deer_rep_age.append(randint(5,15))
+        	wolf_starve.append(randint(5,15))
+        	wolf_rep_age.append(randint(5,15))
 
 		# Restriction on wolf reproduction age/starvation
-    		while c[i]<=b[i]:
-			print c[i],b[i]
-			if b[i] == 15: # i.e the max possible value
-				del b[-1]
-				b.append(randint(5,15))
-			del c[-1]
-			c.append(randint(5,15))
+    		while wolf_rep_age[i]<=wolf_starve[i]:
+			if wolf_starve[i] == 15: # i.e the max possible value
+				del wolf_starve[-1]
+				wolf_starve.append(randint(5,15))
+			del wolf_rep_age[-1]
+			wolf_rep_age.append(randint(5,15))
         
-        	d.append(randint(500,2500))
-        	w.append(randint(500,2500))
-        	diff_dw.append(d[i]-w[i])
-        	ratio_dw.append(float(d[i])/w[i])
+        	init_d.append(randint(500,2500))
+        	init_w.append(randint(500,2500))
+        	diff_dw.append(init_d[i]-init_w[i])
+        	ratio_dw.append(float(init_d[i])/init_w[i])
 
-		print a[i], b[i], c[i], d[i], w[i]
+		print deer_rep_age[i], wolf_starve[i], wolf_rep_age[i], init_d[i], init_w[i]
 		print diff_dw[i],ratio_dw[i]
 
 		#Initialize ecosystem (# of deer, # of wolves, grid size)	
-        	our_eco_system=eco_system(a[i], b[i], c[i], d[i], w[i], 100)	
+        	our_eco_system=eco_system(deer_rep_age[i], wolf_starve[i], wolf_rep_age[i], init_d[i], init_w[i], 100)	
 		our_eco_system.eco_evolution(100,deer_count,wolf_count,time_count,method)
 #Function animation function calls the ecosystem evolution function continuously and displays the 2D environment
 	# FOR ANIMATION animation.FuncAnimation.frames=0
 	# FOR ANIMATION anim= animation.FuncAnimation(fig,lambda: next(our_eco_system.eco_evolution),100,fargs=(deer_count,wolf_count,time_count),init_func=init,interval=1,blit=False,repeat=False)
 	# FOR ANIMATION plt.show()
 		if wolf_count[100] == 0 or deer_count[100] == 0:
-        		red_a.append(a[i])
-                	red_b.append(b[i])
-                	red_c.append(c[i])
+        		red_deer_rep_age.append(deer_rep_age[i])
+                	red_wolf_starve.append(wolf_starve[i])
+                	red_wolf_rep_age.append(wolf_rep_age[i])
         		red_diff_dw.append(diff_dw[i])
         		red_ratio_dw.append(ratio_dw[i])
         	else:
-        		blue_a.append(a[i])
-                	blue_b.append(b[i])
-                	blue_c.append(c[i])
+        		blue_deer_rep_age.append(deer_rep_age[i])
+                	blue_wolf_starve.append(wolf_starve[i])
+                	blue_wolf_rep_age.append(wolf_rep_age[i])
         		blue_diff_dw.append(diff_dw[i])
         		blue_ratio_dw.append(ratio_dw[i])
       
@@ -446,8 +447,8 @@ if method == "2":
 	fig = plt.figure(figsize=(15,15))
 	ax = fig.add_subplot(111, projection='3d')
 
-	ax.scatter(red_a, red_b, red_c, marker='x', color='red', s=red_ratio_dw*400, label='extinction or unstable')
-	ax.scatter(blue_a, blue_b, blue_c, marker='x', color='blue', s=blue_ratio_dw*400, label='stable')
+	ax.scatter(red_deer_rep_age, red_wolf_starve, red_wolf_rep_age, marker='x', color='red', s=red_ratio_dw*400, label='extinction or unstable')
+	ax.scatter(blue_deer_rep_age, blue_wolf_starve, blue_wolf_rep_age, marker='x', color='blue', s=blue_ratio_dw*400, label='stable')
 
 	ax.set_xlabel('Deer reproduction age')
 	ax.set_ylabel('Wolf starvation age')
@@ -458,18 +459,18 @@ if method == "2":
      
 	plt.show()
 
-	print "Wolf initial: ", w
-	print "Deer initial: ", d
+	print "Wolf initial: ", init_w
+	print "Deer initial: ", init_d
 
-	print "Red a:", red_a
-	print "Red b:", red_b
-	print "Red c:", red_c
+	print "Red- Deer rep age:", red_deer_rep_age
+	print "Red- Wolf Starve:", red_wolf_starve
+	print "Red- Wolf rep age:", red_wolf_rep_age
 	print "Red diff_dw:", red_diff_dw
 	print "Red ratio_dw:", red_ratio_dw
         
-	print "Blue a:", blue_a
-	print "Blue b:", blue_b
-	print "Blue c:", blue_c
+	print "Blue- Deer rep age:", blue_deer_rep_age
+	print "Blue- Wolf Starve:", blue_wolf_starve
+	print "Blue- Wolf rep age:", blue_wolf_rep_age
 	print "Blue diff_dw:", blue_diff_dw
 	print "Blue ratio_dw:", blue_ratio_dw
 
