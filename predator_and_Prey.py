@@ -1,19 +1,20 @@
+
 """
-    Describe the dynamics of biological system in which two species in whcih two species interact, predator and prey
-    Similar system can be found in chemistry, physics, economics and social science as well.
-    Lotka - Volterra Eqs
-    Prey:       dx/dt =     a*x     +   (-)b*x*y =  x(a-by)
-    rate        growth      loss
-    Predator:   dy/dt =     d*x*y   +   (-)c*y   = -y(c-dx)
-    rate        growth      loss
-    LV Eqs have periodic solutions with the maxima of the predator population shifited by a phase compared to the prey population
-    Or a closed loop in the phase space
-    Population equilibrium:
-    1. x = 0; y = 0 --> extinction
-    2. x = gamma/delta; y = alpha/beta --> stable region of the system
-    Computationally:
-    1. solve the diffusion Eqs
-    2. Monte Carlo approach / Simulation
+Describe the dynamics of biological system in which two species in whcih two species interact, predator and prey
+Similar system can be found in chemistry, physics, economics and social science as well.
+Lotka - Volterra Eqs
+Prey:       dx/dt =     a*x     +   (-)b*x*y =  x(a-by)
+            rate        growth      loss
+Predator:   dy/dt =     d*x*y   +   (-)c*y   = -y(c-dx)
+            rate        growth      loss
+LV Eqs have periodic solutions with the maxima of the predator population shifited by a phase compared to the prey population
+Or a closed loop in the phase space
+Population equilibrium:
+1. x = 0; y = 0 --> extinction
+2. x = gamma/delta; y = alpha/beta --> stable region of the system
+Computationally:
+1. solve the diffusion Eqs
+2. Monte Carlo approach / Simulation
     a stochastic walk on a 2D world with periodic boundary condition (A torus), with dear and wolves scattered on it.
     Both preys and predators are random walk (with exclusion).
     
@@ -21,10 +22,10 @@
     
     Wolf: eat dear/random in the first place, then random walk, rest the fullness, if fullness.
     if survive a certain times, the wolve split.
-    
+ 
     Step1: deer walk and breed with new deer at the old position
     Step2: wolves hunt and breed and move
-    """
+"""
 
 from scipy import *
 from pylab import *
@@ -43,9 +44,9 @@ class animal:
         self.age_rep = randint(0, int(reproduction_age))
         self.age_starve = randint(0, int(starve_age))
         self.living_status = "live"     # setting live status of the animal "live"/"dead", each time when we loop over
-        #the list of animals we will delete the object with status "dead"
+                                        #the list of animals we will delete the object with status "dead"
         self.breed_status = "immature"  # setting the breed statys of the animal "mature"/"immature", each time when we loop over
-        #the list of animals we will call the bread function if there is enough space to bread
+                                        #the list of animals we will call the bread function if there is enough space to bread
         self.marked = False
     
     
@@ -61,14 +62,14 @@ class animal:
         self.age = 0
         self.breed_status = "immature"
         return self.old_position
-    
+
     #starve function will determine the life status according to the age compared to the starving age
     def starve(self):
         if self.age_starve > self.starveage:
             return "dead"
         else:
             return "live"
-
+    
 #Inherit (from animal) class: deer
 class deer(animal):
     def name(self):
@@ -125,14 +126,14 @@ class eco_system:
             wolf_instance = wolf(x, y, self.wolf_starve, self.wolf_rep)
             self.wolf_list.append(wolf_instance)
 
-#time evolution function (Need lots of work from Fan!!! We can help as well)
-def eco_evolution(self, total_time_steps):
-    self.totaltimesteps = total_time_steps
+    #time evolution function (Need lots of work from Fan!!! We can help as well)
+    def eco_evolution(self, total_time_steps):
+        self.totaltimesteps = total_time_steps
         #add a lot of things here
         '''
-            should return three lists: the number of deers at that time, the number of wolves at that time, and time
-            deernum[] wolfnum[] timenum[]
-            '''
+        should return three lists: the number of deers at that time, the number of wolves at that time, and time
+        deernum[] wolfnum[] timenum[]
+        '''
         deer_num = len(self.deer_list)
         wolf_num = len(self.wolf_list)
         deernum = [deer_num]
@@ -140,10 +141,17 @@ def eco_evolution(self, total_time_steps):
         timenum = [self.t]
         figure(figsize = (7,7))
         for t in range(self.totaltimesteps):
+            """
+            if t%1 == 0:
+                clf()
+                imshow(self.occupication_matrix, vmin = 0, vmax = 2)
+                colorbar()
+                pause(0.01)
+            """
             self.t += 1 # after each evolution, time ++
             # first, check the status of wolves
             # wolf and deer aging and dying loop/ these are done first as they change the number and indexing of the list which may caused sutble bugs...
-            
+
             wolf_temp_list = []
             for thiswolf in self.wolf_list:
                 thiswolf.marked = True
@@ -173,20 +181,20 @@ def eco_evolution(self, total_time_steps):
             
             
             #From below we ONLY work on the wolf/deer list after killing dead ones!
-            
+
             new_born_wolf_list = [] #new born wolf list buffer
             #__LIVING_WOLF_LOOP
             for thiswolf in self.wolf_list:
-                
+
                 i,j = thiswolf.present_position
                 neighbor = [((i-1)%self.N,j), ((i+1)%self.N,j), (i,(j+1)%self.N), (i,(j-1)%self.N)]
-                
+
                 deernb = []  #deer neighbors of this wolf
                 wolfnb = []  #wolf neighbors of this deer
                 for k in range(4): # check whether there are deer/wolf neighbors around the wolf, add their positions to the deer/wolf neighbor list
                     if self.occupication_matrix[neighbor[k]] == 1: deernb.append(neighbor[k])
                     if self.occupication_matrix[neighbor[k]] == 2: wolfnb.append(neighbor[k])
-                
+
                 #__Two situation of wolf move___
                 thiswolf.old_position = thiswolf.present_position
                 if len(deernb) == 0:
@@ -198,7 +206,7 @@ def eco_evolution(self, total_time_steps):
                     thiswolf.present_position = deerpos
                 self.occupication_matrix[thiswolf.old_position] = 0
                 self.occupication_matrix[thiswolf.present_position] = 2
-                
+
                 #if it deposite a new one behind (only when the wolf have some where to move)
                 if thiswolf.check_breed() == "mature" and thiswolf.old_position != thiswolf.present_position:
                     newpos = thiswolf.old_position
@@ -218,7 +226,7 @@ def eco_evolution(self, total_time_steps):
                     temp_deer_list.append(thisdeer)
             print "%d deer killed by wolves"%(len(self.deer_list)-len(temp_deer_list))
             self.deer_list = temp_deer_list
-            
+
             new_born_deer_list = [] #new born deer list buffer
             #___LIVING_DEER_LOOP_____
             for thisdeer in self.deer_list:
@@ -240,28 +248,28 @@ def eco_evolution(self, total_time_steps):
                     new_born_deer_list.append(newdeer)
                     self.occupication_matrix[thisdeer.old_position] = 1
                     thisdeer.age_rep = 0
-                    self.deer_list = self.deer_list + new_born_deer_list
-                    
-                    
-                    deer_num = len(self.deer_list)
-                    wolf_num = len(self.wolf_list)
-                    deernum.append(deer_num)
-                    wolfnum.append(wolf_num)
-                    timenum.append(self.t)
-                    print "current deer number, wolf number, time number = " + str(deer_num) + " , " + str(wolf_num) + " , " + str(self.t)
-                    for wf in self.wolf_list:
-                        wf.marked = False
-                    for dr in self.deer_list:
-                        dr.marked = False
-                            # still in the evolution loop
-                            return deernum, wolfnum, timenum
+            self.deer_list = self.deer_list + new_born_deer_list
+                
+
+            deer_num = len(self.deer_list)
+            wolf_num = len(self.wolf_list)
+            deernum.append(deer_num)
+            wolfnum.append(wolf_num)
+            timenum.append(self.t)
+            print "current deer number, wolf number, time number = " + str(deer_num) + " , " + str(wolf_num) + " , " + str(self.t)
+            for wf in self.wolf_list:
+                wf.marked = False
+            for dr in self.deer_list:
+                dr.marked = False
+            # still in the evolution loop
+        return deernum, wolfnum, timenum
 
 
 #__________Main_function_________
 #testing
 our_eco_system = eco_system(150, 50, 50)
 
-deernum, wolfnum, timenum = our_eco_system.eco_evolution(1000)
+deernum, wolfnum, timenum = our_eco_system.eco_evolution(5000)
 
 figure(figsize = (7, 7))
 subplot(1,2,1)

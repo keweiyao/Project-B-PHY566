@@ -41,8 +41,7 @@ Within each step, the following operations are done serially:
 \item Step5: go back to Step1 and increase the system time by $1$
 \end{enumerate}
 
-
-
+We comment that as long as the steps above are done in serial manner there will be no conflict between the animals such as two wolves try to access to the same location or eat the same deer. Finally, there are a few remarks on the rule of choosing appropriate parameters in actual simulation: first the starvation age of deer is always chosen to be extremely large ($10^9$) so that deer will not die out of starvation; and second we restrict that the starvation age of wolves is always smaller than their reproduction age, or else the wolves population can maintain themselves simply by procreation and is totally independent on the presence of deer population, which is certainly unreal ( Although more realistic treatment do exist. For example, we can to assign each animal an "energy" such that zero energy sentence the animal to death and a certain portion of the energy must be transferred to its offspring during procreation.)
 
 \section{Results and discussion}
 
