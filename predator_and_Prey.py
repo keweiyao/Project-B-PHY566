@@ -40,8 +40,8 @@ class animal:
         self.present_position = (i, j)  # initialize the present positon with i and j
         self.breedage = reproduction_age# setting procreation age
         self.starveage = starve_age     # setting starve age
-        self.age_rep = randint(0, int(reproduction_age*0.5))
-        self.age_starve = randint(0, int(starve_age*0.5))
+        self.age_rep = randint(0, int(reproduction_age))
+        self.age_starve = randint(0, int(starve_age))
         self.living_status = "live"     # setting live status of the animal "live"/"dead", each time when we loop over
         #the list of animals we will delete the object with status "dead"
         self.breed_status = "immature"  # setting the breed statys of the animal "mature"/"immature", each time when we loop over

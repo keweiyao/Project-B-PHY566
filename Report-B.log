@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2014.3.26)  12 APR 2015 15:41
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2014.3.26)  12 APR 2015 16:20
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -207,7 +207,7 @@ Package: verbatim 2003/08/22 v1.5q LaTeX2e package for verbatim enhancements
 \verbatim@line=\toks24
 \verbatim@in@stream=\read1
 )
-No file Report-B.aux.
+(./Report-B.aux)
 \openout1 = `Report-B.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 6.
@@ -222,6 +222,7 @@ LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 6.
 LaTeX Font Info:    ... okay on input line 6.
 LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 6.
 LaTeX Font Info:    ... okay on input line 6.
+
 (/usr/local/texlive/2013/texmf-dist/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count104
@@ -248,20 +249,20 @@ Underfull \hbox (badness 10000) in paragraph at lines 16--17
 {/usr/local/texlive/2013/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
 [2] (./Report-B.aux) ) 
 Here is how much of TeX's memory you used:
- 3275 strings out of 493315
- 49562 string characters out of 6137904
- 116713 words of memory out of 5000000
+ 3277 strings out of 493315
+ 49588 string characters out of 6137904
+ 117713 words of memory out of 5000000
  6703 multiletter control sequences out of 15000+600000
  9319 words of font info for 34 fonts, out of 8000000 for 9000
  957 hyphenation exceptions out of 8191
- 42i,6n,40p,432b,203s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 42i,6n,40p,666b,203s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2013/texmf-dist/fonts/type1/public/am
 sfonts/cm/cmbx12.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/ams
 fonts/cm/cmmi12.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsf
 onts/cm/cmr12.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfon
 ts/cm/cmr17.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts
 /cm/cmsy10.pfb>
-Output written on Report-B.pdf (2 pages, 59124 bytes).
+Output written on Report-B.pdf (2 pages, 60718 bytes).
 PDF statistics:
  31 PDF objects out of 1000 (max. 8388607)
  21 compressed objects within 1 object stream
