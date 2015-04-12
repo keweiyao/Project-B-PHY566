@@ -1,0 +1,46 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage{enumerate,amsmath,graphicx,float,epstopdf,subcaption}
+\graphicspath{ {./} }
+\usepackage{verbatim}
+
+\begin{document}
+
+\title{PHY566 Group Project 2 \\ 
+	Eco-system: Predator and Prey}
+\date{\today}
+\author{David Hicks\\ Weiyao Ke \\ Shagun Maheshwari \\ Fan Zhang}
+
+\maketitle
+\section{Abstract}
+
+The following is the link to the GitHub account of the work done in this paper: \\
+\begin{center}
+https://github.com/keweiyao/Project-B-PHY566.git
+\end{center}
+
+\section{Introduction to eco-system modelling}
+
+\section{Model description and implementation}
+To simulate the interaction between the predator and pray we keep the essential feature of the coupled equations:
+\begin{enumerate}
+	\item Procreation of deer and wolves
+	\item Death of deer and wolves when they reach the starvation age
+	\item Wolves feed on deer.
+\end{enumerate}
+
+We set up an animal class which generates instance of animals (deer and wolves). Animals can wander around a $N \times N$ grid world with periodic boundary condition (equivalent to the surface of a torus).
+
+Initially, populations of deer and wolves with certain age structure is generated with each of their members occupied a randomly chosen but mutually exclusive position on the 2D gird. All the animal of the same species have the same age of sexual maturity and starvation.  A $N \times N$ occupation matrix tracks the position of all the animals, with vacant, deer, and wolves labeled by $0, 1$  and $2$ respectively. 
+
+Within each step, the following operations are done serially: 
+\begin{enumerate}
+\item Step1: age of each member of wolf and deer population is increased by $1$, then is check to see whether the present age reaches the starvation age. Only if the animal is still alive shall we keep it in the animal list for the operations below.
+\item Step2: loop over all wolf members and generate a list of its neighbours and take down its present location on the grid as previous location. If there is one or more deer around, then the wolf chooses one deer randomly and "eat" it by take over its spatial location and reset its own age back to zero.
+\end{enumerate}
+
+
+
+
+\section{Results and discussion}
+
+\end{document}
