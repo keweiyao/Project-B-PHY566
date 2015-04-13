@@ -1,67 +1,150 @@
 \documentclass{beamer}
-<<<<<<< HEAD
 \usepackage{beamerthemesplit} 
-=======
-%\usepackage{beamerthemesplit}
->>>>>>> 74eaa76cfe943b47547e1819b9b37f649b49f6ce
+\usepackage{tikz}
+\usetikzlibrary{trees}
+
+
 \title{Computational Physics Group Project: \\ Ecosystem: predator and prey}
 \author{David Hicks\\ Weiyao Ke \\ Shagun Maheshwari \\ Fan Zhang}
 \date{\today}
 
 \begin{document}
-`	
+
 \frame{\titlepage}
 
 \section[Outline]{}
 \frame{\tableofcontents}
 
 \section{Introduction to eco-system modelling}
-\frame
-{
-  \frametitle{Population interaction of predator and prey in eco-system}
-  %Add what you want here
-\begin{figure}[htbp]
-\begin{center}
-\includegraphics[width=0.9\textwidth]{predator_prey.jpg}
-\caption{default}
-\label{default}
-\end{center}
-\end{figure}
 
-  
-}
 \frame
 {
-  \frametitle{A simplified determinsitic model L-V equation}
-  %Add what you want here
-  
+	\frametitle{Population interaction of predator and prey in eco-system}
+
+	\begin{figure}[htbp]
+	\begin{center}
+	\includegraphics[width=0.6\textwidth]{./pics/progressive-energy-loss.jpeg}
+	\caption{default}
+	\label{default}
+	\end{center}
+	\end{figure}
 }
+
+
+\frame
+{
+ 	\frametitle{Population interaction of predator and prey in eco-system}
+ 
+	\begin{figure}[htbp]
+	\begin{center}
+		\includegraphics[width=0.4\textwidth]{./pics/predator_prey2.jpeg}
+	\caption{http://www.anselm.edu/homepage/jpitocch/genbi101/ecology1intropops.html}
+	\label{default}
+	\end{center}
+	\end{figure}  
+}
+
+\frame
+{
+ 	\frametitle{A simplified determinsitic mode: L-V equation}
+
+}
+
+
 \frame
 {
   \frametitle{Simulation of a eco-system with predator and prey}
-  %Add what you want here
-  
+  A simulation keep the essential nature of the interaction between and within the species, and predict the evolution of population step by step.
+  \begin{itemize}
+  \item<1->{Both predator and prey reproduces when they reach the age of reproduction}
+  \item<2->{Predator feeds on prey.}
+  \item<3->{Predator and prey will die out if maximum age is reached or starved for enough long time}
+  \item<4->{However, simulation is a random process and change the deterministic nature of LV equation (more realistic).}
+  \end{itemize} 
 }
 
 \section{Implementation of the simulation}
 \frame
 {
   \frametitle{Structural setup}
-  %Add what you want here
-  
+
+\tikzstyle{every node}=[anchor=west]
+\begin{tikzpicture}
+[grow via three points={one child at (0.5,-0.5) and two children at (0.5,-0.5) and (0.5,-1)}, edge from parent path={(\tikzparentnode.south) |- (\tikzchildnode.west)}]
+  \node {Animal Class $\rightarrow$ Deer/ Wolf}
+    child{ node{variables}
+    	     	child { node {presentation position}}		
+   		child { node {previous position}}
+    		child { node {reproducing age variable}}
+    		child { node {starving age variable}}
+    	}
+    child [missing] {}				
+    child [missing] {}				
+    child [missing] {}	
+    child [missing] {}	
+    child{ node{constants}
+    		child { node {starvation age}}
+    		child { node {reproduction age}}
+	}
+    child [missing] {}	
+    child [missing] {}	
+    child{ node{functions}
+    		child { node {check status: live/dead}}
+    		child { node {check maturity: procreate/not}}
+	};		
+\end{tikzpicture}
 }
 
 \frame
 {
-  \frametitle{Initialization}
-  %Add what you want here
-  
+  \frametitle{Structural setup}
+
+\tikzstyle{every node}=[anchor=west]
+\begin{tikzpicture}
+[grow via three points={one child at (0.5,-0.5) and two children at (0.5,-0.5) and (0.5,-1)}, edge from parent path={(\tikzparentnode.south) |- (\tikzchildnode.west)}]
+  \node {Eco-system}
+    child{ node{variables}
+    	     	child { node {a list of deer}}		
+   		child { node {a list of wolves}}
+		child { node {occupation matrix (0, 1, 2) $\rightarrow$ (vacant, deer, woof)}}
+    		child { node {system time}}
+    	}
+    child [missing] {}				
+    child [missing] {}				
+    child [missing] {}	
+    child [missing] {}
+    child{ node{constants}
+    		child { node {Initialisation parameters: world size, starvation ages}}
+	}
+    child [missing] {}	
+    child{ node{functions}
+    		child { node {initialisation}}
+    		child { node {time evolution}}
+	};		
+\end{tikzpicture}
+}
+
+
+\frame
+{
+  \frametitle{Initialisation}
+  A sanity simulation requires several constrains on the initialisation of parameters.
+  \begin{itemize}
+  \item<1->{Reproduction age of predators must be larger than their starvation age. (Or else wolf can sustain themselves ...)}
+  \item<2->{Starvation age of the deer is extremely large. (Always enough plants!)}
+  \end{itemize} 
 }
 
 \frame
 {
-  \frametitle{time evolution}
-  %Add what you want here
+  \frametitle{time evolution (All things are done serially!)}
+  \begin{itemize}
+  \item<1->{Step1: loop over wolves and deer and increase ages by 1; then check if they are alive. Only live animals are kept in list for operations below.}
+  \item<2->{Step2: loop over wolves and check neighbours. If deer nearby, capture a random one and move to that position. If no deer but vacancies around, move to a random location. If a mature wolf's present location differs from previous location, deposits a new-born at its previous location.} 
+  \item<3->{Step3: loop over deer and delete those whose location are now occupied by wolves (via the occupation matrix)}
+  \item<4->{Step4: loop over deer and check neighbours. If vacancies around, move to a random location. If a mature deer's present location differs from previous location, deposits a new-born at its previous location.} 
+  \item<5->{Step5: go back to Step1 and increase system time by 1}
+  \end{itemize} 
   
 }
 
@@ -69,14 +152,6 @@
 {
   \frametitle{parameter scanning}
   %Add what you want here
-\begin{figure}[htbp]
-\begin{center}
-\includegraphics[width=0.9\textwidth]{progressive-energy-loss.jpeg}
-\caption{default}
-\label{default}
-\end{center}
-\end{figure}
-
   
 }
 
@@ -113,10 +188,10 @@
   \begin{figure}[H]
   \centering
         \begin{tabular}{@{}cc@{}cc@{}}
-                \includegraphics[width = 0.3\textwidth]{Restricted_Parameter_space_d2500_w250.png} &
-                \includegraphics[width = 0.3\textwidth]{Restricted_Parameter_space_d3000_w500.png} &
-                \includegraphics[width = 0.3\textwidth]{Restricted_Parameter_space_d2000_w2000.png} \\
-                \includegraphics[width = 0.3\textwidth]{Restricted_Parameter_space_d500_w3000.png} \\
+               % \includegraphics[width = 0.3\textwidth]{Restricted_Parameter_space_d2500_w250.png} &
+             %   \includegraphics[width = 0.3\textwidth]{Restricted_Parameter_space_d3000_w500.png} &
+            %    \includegraphics[width = 0.3\textwidth]{Restricted_Parameter_space_d2000_w2000.png} \\
+            %    \includegraphics[width = 0.3\textwidth]{Restricted_Parameter_space_d500_w3000.png} \\
         \end{tabular}
         \label{RestrictParam}
   \end{figure}
