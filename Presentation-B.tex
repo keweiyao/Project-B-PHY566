@@ -2,7 +2,7 @@
 \usepackage{beamerthemesplit} 
 \usepackage{tikz}
 \usetikzlibrary{trees}
-
+\usepackage{movie15}
 
 \title{Computational Physics Group Project: \\ Ecosystem: predator and prey}
 \author{David Hicks\\ Weiyao Ke \\ Shagun Maheshwari \\ Fan Zhang}
@@ -16,20 +16,6 @@
 \frame{\tableofcontents}
 
 \section{Introduction to eco-system modelling}
-
-\frame
-{
-	\frametitle{Population interaction of predator and prey in eco-system}
-
-	\begin{figure}[htbp]
-	\begin{center}
-	\includegraphics[width=0.6\textwidth]{./pics/progressive-energy-loss.jpeg}
-	\caption{default}
-	\label{default}
-	\end{center}
-	\end{figure}
-}
-
 
 \frame
 {
@@ -143,10 +129,10 @@
   \item<2->{Step2: loop over wolves and check neighbours. If deer nearby, capture a random one and move to that position. If no deer but vacancies around, move to a random location. If a mature wolf's present location differs from previous location, deposits a new-born at its previous location.} 
   \item<3->{Step3: loop over deer and delete those whose location are now occupied by wolves (via the occupation matrix)}
   \item<4->{Step4: loop over deer and check neighbours. If vacancies around, move to a random location. If a mature deer's present location differs from previous location, deposits a new-born at its previous location.} 
-  \item<5->{Step5: go back to Step1 and increase system time by 1}
   \end{itemize} 
   
 }
+
 
 \frame
 {
