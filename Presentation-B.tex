@@ -1,5 +1,5 @@
 \documentclass{beamer}
-\usepackage{beamerthemesplit} 
+%\usepackage{beamerthemesplit} 
 \usepackage{tikz}
 \usetikzlibrary{trees}
 \usepackage{movie15}
@@ -134,21 +134,6 @@
 
 \frame
 {
-  \frametitle{time evolution (All things are done serially!)}
-  \begin{itemize}
-  \item<1->{Step1: loop over wolves and deer and increase ages by 1; then check if they are alive. Only live animals are kept in list for operations below.}
-  \item<2->{Step2: loop over wolves and check neighbours. If deer nearby, capture a random one and move to that position. If no deer but vacancies around, move to a random location. If a mature wolf's present location differs from previous location, deposits a new-born at its previous location.} 
-  \item<3->{Step3: loop over deer and delete those whose location are now occupied by wolves (via the occupation matrix)}
-  \item<4->{Step4: loop over deer and check neighbours. If vacancies around, move to a random location. If a mature deer's present location differs from previous location, deposits a new-born at its previous location.} 
-  \end{itemize} 
-  
-}
-<<<<<<< HEAD
-
-
-=======
-\frame
-{
   \frametitle{Simulation of a eco-system with predator and prey}
   %Add what you want here
   We set up a $N \times N$ grid and simulate the eco-system with L-V equation. \\
@@ -156,11 +141,12 @@
   Evolution step $2$: evolution of wolves: \\
   \begin{figure}[htb]
   \begin{center}
-  \includegraphics[width=\textwidth]{wolf.jpg}
+  \includegraphics[width=\textwidth]{./pics/wolf.jpeg}
   \label{default}
   \end{center}
   \end{figure}
 }
+
 \frame
 {
   \frametitle{Evolution step 3}
@@ -172,12 +158,12 @@
   \end{itemize}
   \begin{figure}[htbp]
   \begin{center}
-  \includegraphics[width=\textwidth]{goat.jpg}
+  \includegraphics[width=\textwidth]{./pics/goat.jpeg}
   \label{default}
   \end{center}
   \end{figure}
 }
->>>>>>> 82ed81913c4b35aae72aa40cdabaec8e4506074a
+
 \frame
 {
   \frametitle{parameter scanning}
