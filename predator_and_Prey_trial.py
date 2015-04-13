@@ -42,7 +42,7 @@ class animal:
     def __init__(self,  i, j, starve_age,  reproduction_age):
         self.old_position = (i, j)      # initialize the old position with i and j
         self.present_position = (i, j)  # initialize the present positon with i and j
-	self.age_rep = randint(0,int(reproduction_age))  # setting procreation age
+        self.age_rep = randint(0,int(reproduction_age))  # setting procreation age
         self.age_starve = randint(0,int(starve_age))    # setting starve age
         self.breedage = reproduction_age
         self.starveage = starve_age
