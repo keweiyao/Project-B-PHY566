@@ -139,8 +139,6 @@ class eco_system:
             self.wolf_list.append(wolf_instance)
 
     
-    #time evolution function (Need lots of work from Fan!!! We can help as well)
-    #def eco_evolution(self, deer_count, wolf_count, time_count):
     def eco_evolution(self,total_time_steps,deer_count,wolf_count,time_count,method):
       while self.t <=total_time_steps:
 	self.totaltimesteps = 1
@@ -158,7 +156,6 @@ class eco_system:
         bounds=[-.5,.5,1.5,2.5]
         norm= matplotlib.colors.BoundaryNorm(bounds,cmap.N) 
         for t in range(1):
-	#for t in range(self.totaltimesteps):
             self.t += 1 # after each evolution, time ++
             # first, check the status of wolves
             # wolf and deer aging and dying loop/ these are done first as they change the number and indexing of the list which may caused sutble bugs...
@@ -276,29 +273,24 @@ class eco_system:
             	fig.clf()											# Clear the previous figure (makes faster)
 	    	plt.title("Predator-Prey Ecosystem: Live Feed \nRed: Predator ; Blue: Prey")		# Figure Title
 	    	image=imshow(self.occupation_matrix,interpolation="nearest",cmap=cmap,norm=norm)		# Display 2D grid/environment
-	    #if self.t == 100:
-	    #	plt.close()
-	    #	print "closed"
-	    # Save snapshots of 2D environment
-	    #if (self.t == 1) or (self.t % 50)==0:							# If the first iteration or every 50, save
-		#plt.savefig("pics/ecosystem_snapshot_%i.png" %(self.t)) 				# Save in pics/ directory
+	    if (self.t == 1) or (self.t % 50)==0:							# If the first iteration or every 50, save
+		plt.savefig("pics/ecosystem_snapshot_%i.png" %(self.t)) 				# Save in pics/ directory
 	    deer_count.append(deer_num)									# Append deer count for iteration (used for population plot)
 	    wolf_count.append(wolf_num)									# Append deer count for iteration (used for population plot)
 	    time_count.append(self.t)									# Append deer count for iteration (used for population plot)
 	    # FOR ANIMATION 
 	    if method == "1":
 		return anim
-      #return 
 
 ######## Function Needed for Animation #######
 def init():
         plt.title("Predator-Prey Ecosystem: Live Feed")
 
-
 #__________Main_function_________
 
 # Input parameter section
-print "Predator-Prey Ecosystem: \n1) Show Animation (Single parameter) \n2)No Animation (Parameter search)"
+print "Predator-Prey Ecosystem: \n1)Show Animation (Single parameter) \n2)Full Parameter Search (No animation) "
+print "3)Restricted Parameter Search (Inital wolf/deer populations fixed)"
 method=raw_input()
 
 # If using animation, input user defined parameters
@@ -322,8 +314,14 @@ if method == "2":
 	iterations=int(raw_input())
 	print "For",iterations,"iterations."
 
+if method == "3":
+        print "Number of iterations to perform:"
+        iterations=int(raw_input())
+	print "Initial number of deer: "
+	init_deer=int(raw_input())
+	print "Initial number of wolves: "
+	init_wolf=int(raw_input())
 print "Performing using method",method,"..."
-
 
 
 #Defining matrices for parameters:
@@ -371,14 +369,16 @@ for i in range(0,iterations):
         deer_count=[]
         wolf_count=[]
         time_count=[]
+	# If animation method: Show animation and plot sinusoidal curve
         if method == "1":
 		our_eco_system=eco_system(deer_rep, wolf_st, wolf_rep, init_deer, init_wolf, 100)
                 fig = plt.figure()
                 animation.FuncAnimation.frames=0
-                anim= animation.FuncAnimation(fig,our_eco_system.eco_evolution,100,fargs=(deer_count,wolf_count,time_count,method),init_func=init,interval=1,blit=
+                anim= animation.FuncAnimation(fig,our_eco_system.eco_evolution,1000,fargs=(deer_count,wolf_count,time_count,method),init_func=init,interval=1,blit=
 False,repeat=False)
                 plt.show()
-        
+        	
+		# Sinusoidal curve generation
 		fig2 = plt.figure()
         	plot(time_count, wolf_count, "r", linewidth = 3, label = "Wolf population")
         	plot(time_count, deer_count, "b", linewidth = 3, label = "Deer population")
@@ -386,14 +386,15 @@ False,repeat=False)
         	title("Ecosystem Population Evolution Through Time")
         	xlabel("Evolution of Time")
         	ylabel("Population (# of Animals)")
-
         	show()
 
-	if method == "2":	
+	# If Parameter searches ...
+	if method == "2" or method == "3":	
+		# Randomly generate sets of deer and wolf age/starvation parameters
 		deer_rep_age.append(randint(5,15))
         	wolf_starve.append(randint(5,15))
         	wolf_rep_age.append(randint(5,15))
-
+		
 		# Restriction on wolf reproduction age/starvation
     		while wolf_rep_age[i]<=wolf_starve[i]:
 			if wolf_starve[i] == 15: # i.e the max possible value
@@ -402,9 +403,17 @@ False,repeat=False)
 			del wolf_rep_age[-1]
 			wolf_rep_age.append(randint(5,15))
         
-        	init_d.append(randint(500,2500))
-        	init_w.append(randint(500,2500))
-        	diff_dw.append(init_d[i]-init_w[i])
+		# If full parameter search, randomly generate starting populations
+		if method == "2":
+        		init_d.append(randint(500,2500))
+        		init_w.append(randint(500,2500))
+        	
+		# If restricted parameter search, use user defined starting populations
+		if method == "3":
+                        init_d.append(init_deer)
+                        init_w.append(init_wolf)
+		# Determine difference and ratio between poupluations
+		diff_dw.append(init_d[i]-init_w[i])
         	ratio_dw.append(float(init_d[i])/init_w[i])
 
 		print deer_rep_age[i], wolf_starve[i], wolf_rep_age[i], init_d[i], init_w[i]
@@ -412,12 +421,8 @@ False,repeat=False)
 
 		#Initialize ecosystem (# of deer, # of wolves, grid size)	
         	our_eco_system=eco_system(deer_rep_age[i], wolf_starve[i], wolf_rep_age[i], init_d[i], init_w[i], 100)	
-		our_eco_system.eco_evolution(100,deer_count,wolf_count,time_count,method)
-#Function animation function calls the ecosystem evolution function continuously and displays the 2D environment
-	# FOR ANIMATION animation.FuncAnimation.frames=0
-	# FOR ANIMATION anim= animation.FuncAnimation(fig,lambda: next(our_eco_system.eco_evolution),100,fargs=(deer_count,wolf_count,time_count),init_func=init,interval=1,blit=False,repeat=False)
-	# FOR ANIMATION plt.show()
-		if wolf_count[100] == 0 or deer_count[100] == 0:
+		our_eco_system.eco_evolution(300,deer_count,wolf_count,time_count,method)
+		if wolf_count[300] == 0 or deer_count[300] == 0:
         		red_deer_rep_age.append(deer_rep_age[i])
                 	red_wolf_starve.append(wolf_starve[i])
                 	red_wolf_rep_age.append(wolf_rep_age[i])
@@ -430,32 +435,28 @@ False,repeat=False)
         		blue_diff_dw.append(diff_dw[i])
         		blue_ratio_dw.append(ratio_dw[i])
       
-	#fig2 = plt.figure()
-	#plot(time_count, wolf_count, "r", linewidth = 3, label = "Wolf population")
-	#plot(time_count, deer_count, "b", linewidth = 3, label = "Deer population")
-	#legend(loc = "upper right", fontsize = 20)
-	#title("Ecosystem Population Evolution Through Time")
-	#xlabel("Evolution of Time")
-	#ylabel("Population (# of Animals)")
-
-	# show()
-
-#### plotting of parameter space:
-
-
-if method == "2":
+#### Plotting of parameter space:
+if method == "2" or method == "3":
 	fig = plt.figure(figsize=(15,15))
 	ax = fig.add_subplot(111, projection='3d')
 
-	ax.scatter(red_deer_rep_age, red_wolf_starve, red_wolf_rep_age, marker='x', color='red', s=red_ratio_dw*400, label='extinction or unstable')
-	ax.scatter(blue_deer_rep_age, blue_wolf_starve, blue_wolf_rep_age, marker='x', color='blue', s=blue_ratio_dw*400, label='stable')
-
+	if method == "2":
+		ax.scatter(red_deer_rep_age, red_wolf_starve, red_wolf_rep_age, marker='o', color='red', s=red_ratio_dw*600, label='extinction or unstable')
+		ax.scatter(blue_deer_rep_age, blue_wolf_starve, blue_wolf_rep_age, marker='o', color='blue', s=blue_ratio*600, label='stable')
+		legend()
+	if method == "3":
+                ax.scatter(red_deer_rep_age, red_wolf_starve, red_wolf_rep_age, marker='o', color='red', s=400, label='extinction or unstable')
+                ax.scatter(blue_deer_rep_age, blue_wolf_starve, blue_wolf_rep_age, marker='o', color='blue', s=400, label='stable')
+		legend()
 	ax.set_xlabel('Deer reproduction age')
 	ax.set_ylabel('Wolf starvation age')
 	ax.set_zlabel('Wolf redproduction age')
 
 	plt.title('Parameter space')
-	plt.savefig("test_Parameter_space_3D.png")
+	if method == "2":
+		plt.savefig("All_Parameter_space_3D.png")
+	if method == "3":
+		plt.savefig("Restricted_Parameter_space_d%i_w%i.png" %(init_deer,init_wolf))
      
 	plt.show()
 
@@ -475,10 +476,3 @@ if method == "2":
 	print "Blue ratio_dw:", blue_ratio_dw
 
 
-#plot(red_d,red_w, 'r*',label="extinction or unstable")
-#plot(blue_d,blue_w, 'b*',label="stable")
-#plt.legend(loc='upper right')
-#plt.xlabel('Initial number of Deer')
-#plt.ylabel('Initial number of Wolf')
-#plt.title('Initial Number Parameter space')
-#plt.savefig("Init_Number_Parameter_space.png")

@@ -1,5 +1,9 @@
 \documentclass{beamer}
+<<<<<<< HEAD
 \usepackage{beamerthemesplit} 
+=======
+%\usepackage{beamerthemesplit}
+>>>>>>> 74eaa76cfe943b47547e1819b9b37f649b49f6ce
 \title{Computational Physics Group Project: \\ Ecosystem: predator and prey}
 \author{David Hicks\\ Weiyao Ke \\ Shagun Maheshwari \\ Fan Zhang}
 \date{\today}
@@ -16,6 +20,14 @@
 {
   \frametitle{Population interaction of predator and prey in eco-system}
   %Add what you want here
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[width=0.9\textwidth]{predator_prey.jpg}
+\caption{default}
+\label{default}
+\end{center}
+\end{figure}
+
   
 }
 \frame
@@ -57,13 +69,71 @@
 {
   \frametitle{parameter scanning}
   %Add what you want here
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[width=0.9\textwidth]{progressive-energy-loss.jpeg}
+\caption{default}
+\label{default}
+\end{center}
+\end{figure}
+
   
 }
+
+\frame
+{
+  \frametitle{Parameter Search}
+  \underline{5 parameters to test (5-D parameter space)}
+  \begin{itemize}
+  \item{\textbf{Initial population of deer}}
+  \item{\textbf{Initial population of wolves}}
+  \item{Reproduction age of deer}
+  \item{Reproduction age of wolf}
+  \item{Starvation "age" of wolf}
+  \end{itemize} 
+
+  \underline{Reduce to 4 dimensions (4-D)}
+  \begin{itemize}
+  \item{\textbf{Ratio of initial populations : Size of point}}
+  \item{Reproduction age of deer : x-axis}
+  \item{Reproduction age of wolf : y-axis}
+  \item{Starvation "age" of wolf : z-axis}
+  \end{itemize} 
+
+}
+\frame
+{
+  \frametitle{Results of Full Parameter Search}
+}
+
+\frame
+{
+  \frametitle{Results of Restricted Parameter Search}
+  \center{Fix initial population ratios}
+  \begin{figure}[H]
+  \centering
+        \begin{tabular}{@{}cc@{}cc@{}}
+                \includegraphics[width = 0.3\textwidth]{Restricted_Parameter_space_d2500_w250.png} &
+                \includegraphics[width = 0.3\textwidth]{Restricted_Parameter_space_d3000_w500.png} &
+                \includegraphics[width = 0.3\textwidth]{Restricted_Parameter_space_d2000_w2000.png} \\
+                \includegraphics[width = 0.3\textwidth]{Restricted_Parameter_space_d500_w3000.png} \\
+        \end{tabular}
+        \label{RestrictParam}
+  \end{figure}
+
+
+}
+
+
 
 \section{Results and discussion}
 \frame
 {
-  \frametitle{results}
+  \frametitle{Ecosystem at Equilibrium}
+  Parameters used:  .........
+
+
+
   %Add what you want here
   
 }
