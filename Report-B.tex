@@ -19,6 +19,33 @@ https://github.com/keweiyao/Project-B-PHY566.git
 \end{center}
 
 \section{Introduction to eco-system modelling}
+The dynamics of biological systems consist of one predator and one prey can be described by Lotka-Volterra equations:
+\begin{eqnarray*}
+\frac{dx}{dt} &=& \alpha x - \beta x y = x(\alpha - \beta y) \\
+\frac{dy}{dt} &=& - \gamma y + \delta x y = - y (\gamma - \delta x)
+\end{eqnarray*}
+Where, x is the number of prey, y is the number of predator, $\frac{dx}{dt}$ and $\frac{dy}{dt}$ represent the growth rates of two populations, and $\alpha, \beta, \gamma$ and $\delta$ are parameters describing the interaction of two species. \\
+When the biological system has reached eco-equilibrium, the number of predator and prey will evolve through time like in Fig.~\ref{Fig:evolution}.
+\begin{figure}[!htb]
+  \centering
+  \includegraphics[width=0.8\textwidth]{G:/duke/courses/PHY566/hw7/evolution.png}
+  \caption{}\label{Fig:evolution}
+\end{figure}
+Where, the peak of predator population is always $90^{\circ}$ ahead of that of prey population. \\
+On the other hand, in mathematical prospect, the L-V equations have two solutions:
+\begin{eqnarray*}
+x &=& 0, y = 0 \\
+or x &=& \frac{\gamma}{\delta}, y = \frac{\alpha}{\beta}
+\end{eqnarray*}
+Which is, either the two species will distinct, or they will reach a periodic stable situation. And, in the later situation, the evolution of the system doesn't depend on the size of the eco-system, or the initial numbers of two species. It only depends on the behavioral characteristics of the predator and the prey. \\
+The result of this model matches with the evolution of our nature roughly. However, it can only simulate the situation when there's only one predator and one prey, it cannot simulate the situation when there are several predators in the eco-system, or several species are competing for one common resources. \\
+When, several species are competing for a common resource, the competitive L-V equation can be adopted to modelize the situation:
+\begin{eqnarray*}
+\frac{dx}{dt} &=& \alpha_1 x (1- (\frac{x + \beta_{xy} y}{K_1})) \\
+\frac{dy}{dt} &=& \alpha_2 y (1 - (\frac{y + \beta_{yx} x}{K_2}))
+\end{eqnarray*}
+The trophic interactions are included to the simulated system. \\
+In addition, the generalized L-V equation can be used to model direct competition and trophic relationships between arbitrary number of species. But, in this study, we will just use L-V equation to produce a simple model between wolf and deer. \\
 
 \section{Model description and implementation}
 To simulate the interaction between the predator and pray we keep the essential features of the L-V equations:
