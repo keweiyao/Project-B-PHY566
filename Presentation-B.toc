@@ -1,4 +1,0 @@
-\beamer@endinputifotherversion {3.26pt}
-\beamer@sectionintoc {2}{Introduction to eco-system modelling}{3}{0}{1}
-\beamer@sectionintoc {3}{Implementation of the simulation}{10}{0}{2}
-\beamer@sectionintoc {4}{Results and discussion}{23}{0}{3}
