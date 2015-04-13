@@ -38,13 +38,12 @@
  \frac{dx}{dt} &=& \alpha x - \beta x y = x(\alpha - \beta y) \\
  \frac{dy}{dt} &=& - \gamma y + \delta x y = - y (\gamma - \delta x)
  \end{eqnarray*}
- Where, x is the number of prey, y is the number of predator, $\frac{dx}{dt}$ and $\frac{dy}{dt}$ represent the growth rates of two populations, and $\alpha, \beta, \gamma$ and $\delta$ are parameters describing the interaction of two species. \\
  When the biological system has reached eco-equilibrium, the number of predator and prey are supposed to be either situation below.
  \begin{eqnarray*}
  x &=& 0, y = 0 \\
  or x &=& \frac{\gamma}{\delta}, y = \frac{\alpha}{\beta}
  \end{eqnarray*}
- Which is, either the two species will distinct, or they will reach a periodic stable situation.
+ Which is, either distinct, or reach a periodic stable situation.
 }
 
 
@@ -196,14 +195,32 @@
 {
   \frametitle{Results of Full Parameter Search}
   \begin{figure}[H]
-  \centering
-        \begin{tabular}{@{}cc@{}cc@{}}
-		\includegraphics[width = 0.5\textwidth]{./pics/Eco_All_param_front.png} &&
-                \includegraphics[width = 0.5\textwidth]{./pics/Eco_All_param_rep_v_rep.png} \\
-                \includegraphics[width = 0.5\textwidth]{./pics/Eco_All_param_wage_v_wstarve.png} &&
-                \includegraphics[width = 0.5\textwidth]{./pics/Eco_All_param_wstarve_v_drep.png} \\
-        \end{tabular}
-        \label{RestrictParam}
+	\includegraphics[width = 1\textwidth]{./pics/Eco_All_param_front.png} 
+  \end{figure}
+        
+}
+
+\frame
+{
+  \frametitle{Results of Full Parameter Search}
+  \begin{figure}[H]
+	\includegraphics[width = 1\textwidth]{./pics/Eco_All_param_rep_v_rep.png} 
+  \end{figure}
+}
+
+\frame
+{
+  \frametitle{Results of Full Parameter Search}
+  \begin{figure}[H]
+	\includegraphics[width = 1\textwidth]{./pics/Eco_All_param_wage_v_wstarve.png}
+  \end{figure}
+}
+                
+\frame
+{
+  \frametitle{Results of Full Parameter Search}
+  \begin{figure}[H]
+	\includegraphics[width = 1\textwidth]{./pics/Eco_All_param_wstarve_v_drep.png}
   \end{figure}
 
 }
@@ -214,16 +231,15 @@
   \center{Fix initial population ratios}
   \begin{figure}[H]
   \centering
-        \begin{tabular}{@{}cc@{}cc@{}}
+        \begin{tabular}{@{}cc@{}cc@{}cc@{}}
                 \includegraphics[width = 0.3\textwidth]{./pics/Restricted_Parameter_space_d2500_w250.png} &
                 \includegraphics[width = 0.3\textwidth]{./pics/Restricted_Parameter_space_d3000_w500.png} &
                 \includegraphics[width = 0.3\textwidth]{./pics/Restricted_Parameter_space_d2000_w2000.png} \\
-                \includegraphics[width = 0.3\textwidth]{./pics/Restricted_Parameter_space_d500_w3000.png} &&
-		\includegraphics[width = 0.3\textwidth]{./pics/Restricted_Parameter_space_d250_w2500.png} \\
+                \includegraphics[width = 0.2\textwidth]{./pics/Restricted_Parameter_space_d500_w3000.png} &&
+		\includegraphics[width = 0.2\textwidth]{./pics/Restricted_Parameter_space_d250_w2500.png} \\
         \end{tabular}
         \label{RestrictParam}
   \end{figure}
-
 
 }
 
