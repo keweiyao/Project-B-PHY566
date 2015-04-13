@@ -2,7 +2,6 @@
 %\usepackage{beamerthemesplit} 
 \usepackage{tikz}
 \usetikzlibrary{trees}
-\usepackage{movie15}
 
 \title{Computational Physics Group Project: \\ Ecosystem: predator and prey}
 \author{David Hicks\\ Weiyao Ke \\ Shagun Maheshwari \\ Fan Zhang}
@@ -27,93 +26,92 @@
 	\caption{http://www.anselm.edu/homepage/jpitocch/genbi101/ecology1intropops.html}
 	\label{default}
 	\end{center}
-	\end{figure}  
+	\end{figure} 
 }
 
 \frame
 {
- \frametitle{A simplified determinsitic mode: L-V equation}
- The dynamics of biological systems consist of one predator and one prey can be described by Lotka-Volterra equations:
- \begin{eqnarray*}
- \frac{dx}{dt} &=& \alpha x - \beta x y = x(\alpha - \beta y) \\
- \frac{dy}{dt} &=& - \gamma y + \delta x y = - y (\gamma - \delta x)
- \end{eqnarray*}
- When the biological system has reached eco-equilibrium, the number of predator and prey are supposed to be either situation below.
- \begin{eqnarray*}
- x &=& 0, y = 0 \\
- or x &=& \frac{\gamma}{\delta}, y = \frac{\alpha}{\beta}
- \end{eqnarray*}
- Which is, either distinct, or reach a periodic stable situation.
+ 	\frametitle{A simplified determinisitic mode: L-V equation}
+ 	The dynamics of biological systems consist of one predator and one prey can be described by Lotka-Volterra (LV) equations:
+ 	\begin{eqnarray*}
+ 	\frac{dx}{dt} &=& \alpha x - \beta x y = x(\alpha - \beta y) \\
+ 	\frac{dy}{dt} &=& - \gamma y + \delta x y = - y (\gamma - \delta x)
+ 	\end{eqnarray*}
+ 	When the biological system has reached eco-equilibrium, the number of predator and prey are supposed to be either situation below.
+ 	\begin{eqnarray*}
+ 	x &=& 0, y = 0 \\
+ 	or x &=& \frac{\gamma}{\delta}, y = \frac{\alpha}{\beta}
+ 	\end{eqnarray*}
+ 	Which is, either distinct, or reach a periodic stable situation.
 }
 
+\section{Simulation and Implementation}
+\frame
+{
+ 	 \frametitle{Simulation of a eco-system with predator and prey}
+  	A simulation keep the essential nature of the interaction between and within the species, and predict the 	evolution of population step by step.
+  	\begin{itemize}
+  	\item<1->{Both predator and prey reproduces when they reach the age of reproduction}
+  	\item<2->{Predator feeds on prey.}
+  	\item<3->{Predator and prey will die out if maximum age is reached or starved for enough long time}
+  	\item<4->{However, simulation is a random process and change the deterministic nature of LV equation (more realistic).}
+  	\end{itemize} 
+}
 
 \frame
 {
-  \frametitle{Simulation of a eco-system with predator and prey}
-  A simulation keep the essential nature of the interaction between and within the species, and predict the evolution of population step by step.
-  \begin{itemize}
-  \item<1->{Both predator and prey reproduces when they reach the age of reproduction}
-  \item<2->{Predator feeds on prey.}
-  \item<3->{Predator and prey will die out if maximum age is reached or starved for enough long time}
-  \item<4->{However, simulation is a random process and change the deterministic nature of LV equation (more realistic).}
-  \end{itemize} 
-}
+ 	\frametitle{Structural setup}
 
-\section{Implementation of the simulation}
-\frame
-{
-  \frametitle{Structural setup}
-
-\tikzstyle{every node}=[anchor=west]
-\begin{tikzpicture}
-[grow via three points={one child at (0.5,-0.5) and two children at (0.5,-0.5) and (0.5,-1)}, edge from parent path={(\tikzparentnode.south) |- (\tikzchildnode.west)}]
-  \node {Animal Class $\rightarrow$ Deer/ Wolf}
-    child{ node{variables}
+	\tikzstyle{every node}=[anchor=west]
+	\begin{tikzpicture}
+	[grow via three points={one child at (0.5,-0.5) and two children at (0.5,-0.5) and (0.5,-1)}, edge from parent path={(\tikzparentnode.south) |- (\tikzchildnode.west)}]
+ 	 \node {Animal Class $\rightarrow$ Deer/ Wolf}
+    	child{ node{variables}
     	     	child { node {presentation position}}		
    		child { node {previous position}}
     		child { node {reproducing age variable}}
     		child { node {starving age variable}}
-    	}
-    child [missing] {}				
-    child [missing] {}				
-    child [missing] {}	
-    child [missing] {}	
-    child{ node{constants}
+    		}
+    	child [missing] {}				
+    	child [missing] {}				
+    	child [missing] {}	
+    	child [missing] {}	
+    	child{ node{constants}
     		child { node {starvation age}}
     		child { node {reproduction age}}
-	}
-    child [missing] {}	
-    child [missing] {}	
-    child{ node{functions}
+		}
+   	 child [missing] {}	
+    	child [missing] {}	
+   	 child{ node{functions}
     		child { node {check status: live/dead}}
     		child { node {check maturity: procreate/not}}
-	};		
-\end{tikzpicture}
+		};		
+	\end{tikzpicture}
 }
 
 \frame
 {
-  \frametitle{Structural setup}
+ 	 \frametitle{Structural setup of the code}
 
-\tikzstyle{every node}=[anchor=west]
-\begin{tikzpicture}
-[grow via three points={one child at (0.5,-0.5) and two children at (0.5,-0.5) and (0.5,-1)}, edge from parent path={(\tikzparentnode.south) |- (\tikzchildnode.west)}]
-  \node {Eco-system}
-    child{ node{variables}
+	\tikzstyle{every node}=[anchor=west]
+	\begin{tikzpicture}
+	[grow via three points={one child at (0.5,-0.5) and two children at (0.5,-0.5) and (0.5,-1)}, edge from parent path={(\tikzparentnode.south) |- (\tikzchildnode.west)}]
+  	\node {Eco-system}
+    	child{ node{variables}
     	     	child { node {a list of deer}}		
    		child { node {a list of wolves}}
 		child { node {occupation matrix (0, 1, 2) $\rightarrow$ (vacant, deer, woof)}}
     		child { node {system time}}
     	}
-    child [missing] {}				
-    child [missing] {}				
-    child [missing] {}	
-    child [missing] {}
-    child{ node{constants}
+    	child [missing] {}				
+   	child [missing] {}				
+    	child [missing] {}	
+    	child [missing] {}
+    	child{ node{constants}
     		child { node {Initialisation parameters: world size, starvation ages}}
 	}
-    child [missing] {}	
-    child{ node{functions}
+    	child [missing] {}	
+    	child{ node{functions}
     		child { node {initialisation}}
     		child { node {time evolution}}
 	};		
@@ -123,51 +121,48 @@
 
 \frame
 {
-  \frametitle{Initialisation}
-  A sanity simulation requires several constrains on the initialisation of parameters.
-  \begin{itemize}
-  \item<1->{Reproduction age of predators must be larger than their starvation age. (Or else wolf can sustain themselves ...)}
-  \item<2->{Starvation age of the deer is extremely large. (Always enough plants!)}
-  \end{itemize} 
+  	\frametitle{Initialisation}
+  	A sanity simulation requires several constrains on the initialisation of parameters.
+  	\begin{itemize}
+  	\item<1->{Reproduction age of predators must be larger than their starvation age. (Or else wolf can sustain themselves ...)}
+  	\item<2->{Starvation age of the deer is extremely large. (Always enough plants!)}
+  	\end{itemize} 
 }
 
 \frame
 {
-  \frametitle{Simulation of a eco-system with predator and prey}
-  %Add what you want here
-  We set up a $N \times N$ grid and simulate the eco-system with L-V equation. \\
-  Evolution Step $1$: check wolf and deer population, increase its age, and see whether a single animal has starved to death. \\
-  Evolution step $2$: evolution of wolves: \\
-  \begin{figure}[htb]
-  \begin{center}
-  \includegraphics[width=\textwidth]{./pics/wolf.jpeg}
-  \label{default}
-  \end{center}
-  \end{figure}
-}
-
-\frame
-{
-  \frametitle{Evolution step 3}
-  Evolution of deers: \\
-  \begin{itemize}
-  \item 1. Delete all unfortunate deers. \\
-  \pause
-  \item 2. Evolution of live deers. \\
-  \end{itemize}
-  \begin{figure}[htbp]
-  \begin{center}
-  \includegraphics[width=\textwidth]{./pics/goat.jpeg}
-  \label{default}
-  \end{center}
-  \end{figure}
-}
-
-\frame
-{
-  \frametitle{parameter scanning}
-  %Add what you want here
+  	\frametitle{Evolution of Wolves}
+ 	 We set up a $N \times N$ grid and simulate the eco-system with L-V equation. \\
+  	 \begin{itemize}
+  	\item<1->{Step $1$: check wolf and deer population, increase its age, and see whether a single animal has starved to death.}
+  	\item<2->{Step $2$: evolution of wolves:
   
+ 	 \begin{figure}[htb]
+  	\begin{center}
+ 	 \includegraphics[width=\textwidth]{./pics/wolf.jpeg}
+ 	 \label{default}
+  	\end{center}
+  	\end{figure}
+ 	 }
+ 	 \end{itemize}
+}
+
+\frame
+{
+  	\frametitle{Evolution of deer}
+  	Evolution of deers: \\
+ 	\begin{itemize}
+  	\item<1->{Step 1: Delete all unfortunate deers.}
+  	\item<2->{Setp 2: Evolution of live deers.
+ 
+  	\begin{figure}[htbp]
+ 	 \begin{center}
+  	\includegraphics[width=\textwidth]{./pics/goat.jpeg}
+  	\label{default}
+ 	 \end{center}
+  	\end{figure}
+  	}
+   	\end{itemize}
 }
 
 \frame
