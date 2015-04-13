@@ -26,7 +26,7 @@ Computationally:
     Step2: wolves hunt and breed and move
 """
 
-from scipy import *
+#from scipy import *
 from pylab import *
 from random import *
 import numpy as np
