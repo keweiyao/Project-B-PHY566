@@ -386,7 +386,8 @@ False,repeat=False)
         	title("Ecosystem Population Evolution Through Time")
         	xlabel("Evolution of Time")
         	ylabel("Population (# of Animals)")
-        	show()
+        	savefig("pics/Stable_time_evo.png")
+		show()
 
 	# If Parameter searches ...
 	if method == "2" or method == "3":	
@@ -442,7 +443,7 @@ if method == "2" or method == "3":
 
 	if method == "2":
 		ax.scatter(red_deer_rep_age, red_wolf_starve, red_wolf_rep_age, marker='o', color='red', s=red_ratio_dw*600, label='extinction or unstable')
-		ax.scatter(blue_deer_rep_age, blue_wolf_starve, blue_wolf_rep_age, marker='o', color='blue', s=blue_ratio*600, label='stable')
+		ax.scatter(blue_deer_rep_age, blue_wolf_starve, blue_wolf_rep_age, marker='o', color='blue', s=blue_ratio_dw*600, label='stable')
 		legend()
 	if method == "3":
                 ax.scatter(red_deer_rep_age, red_wolf_starve, red_wolf_rep_age, marker='o', color='red', s=400, label='extinction or unstable')
