@@ -440,9 +440,14 @@ if method == "2" or method == "3":
 	fig = plt.figure(figsize=(15,15))
 	ax = fig.add_subplot(111, projection='3d')
 
-	ax.scatter(red_deer_rep_age, red_wolf_starve, red_wolf_rep_age, marker='x', color='red', s=red_ratio_dw*400, label='extinction or unstable')
-	ax.scatter(blue_deer_rep_age, blue_wolf_starve, blue_wolf_rep_age, marker='x', color='blue', s=blue_ratio_dw*400, label='stable')
-
+	if method == "2":
+		ax.scatter(red_deer_rep_age, red_wolf_starve, red_wolf_rep_age, marker='o', color='red', s=red_ratio_dw*600, label='extinction or unstable')
+		ax.scatter(blue_deer_rep_age, blue_wolf_starve, blue_wolf_rep_age, marker='o', color='blue', s=blue_ratio*600, label='stable')
+		legend()
+	if method == "3":
+                ax.scatter(red_deer_rep_age, red_wolf_starve, red_wolf_rep_age, marker='o', color='red', s=400, label='extinction or unstable')
+                ax.scatter(blue_deer_rep_age, blue_wolf_starve, blue_wolf_rep_age, marker='o', color='blue', s=400, label='stable')
+		legend()
 	ax.set_xlabel('Deer reproduction age')
 	ax.set_ylabel('Wolf starvation age')
 	ax.set_zlabel('Wolf redproduction age')
