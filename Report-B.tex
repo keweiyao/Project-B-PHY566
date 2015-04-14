@@ -77,6 +77,44 @@ A few remarks on the rule of choosing appropriate parameters in actual simulatio
 With the initialisation and time updating procedures, we are able to "predict" the time evolution of the populations. However, due to the random nature of the Monte-Carlo simulation, we cannot guarantee that two runs with same parameters gives exactly (or even qualitatively) similar results, which is in contrast to the deterministic nature of the L-V equation. But this is not a drawback of simulation, in fact the randomness nature makes the simulation approach more realistic than L-V equation prediction as the eco-system itself is subject to all kinds of random process all the time.
 
 \section{Results and discussion}
+\subsection{Generic results}
+A detailed investigation of the full parameter space is in next section "Parameter Search", here we just conduct a few sanity test of our code with a few set of parameters.
+
+The parameters for Fig. (\ref{gen}) are listed in Table (\ref{Few_parameters}).
+\begin{table}[htdp]
+\caption{default}
+\begin{center}
+\begin{tabular}{c|cccc}
+\hline
+Fig. $\#$ 			&	1	&	2	&	3	&	4	\\
+\hline
+World size N		&	50	&	50	&	50	&	50	\\
+initial deer $\#$ 	&	150	&	150	&	150	&	150	\\
+initial wolf $\#$ 		&	50	&	50	&	50	&	50	\\
+wolf reproduction age&	15	&	15	&	50	&	50	\\
+deer reproduction age&	5	&	5	&	10	&	10	\\
+wolf starvation age 	&	10	&	10	&	30	&	30	\\
+deer starvation age	&	$10^{10}$	&	$10^{10}$	&	$10^{10}$	&	$10^{10}$	\\
+initial age structure	&	uniform	&	uniform	&	all 0	&	all 0	\\		
+\hline
+\end{tabular}
+\end{center}
+\label{Few_parameters}
+\end{table}
+
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[width=0.7\textwidth]{./pics/gen-5-10-15-uniform.jpeg}
+\includegraphics[width=0.7\textwidth]{./pics/gen-5-10-15-delta.jpeg}
+\includegraphics[width=0.7\textwidth]{./pics/gen-10-30-50-uniform.jpeg}
+\includegraphics[width=0.7\textwidth]{./pics/gen-10-30-50-delta.jpeg}
+\caption{The parameters for subfigure 1-4 (top to bottom) is listed in Table (\ref{Few_parameters}). Within each subfigure, the left panel is the time evolution of the wolf and deer population; the right panel displays the phase space $(N_{deer}, N_{wolf})$ evolution of the eco-system.}
+\label{gen}
+\end{center}
+\end{figure}
+
+
+
 \subsection{Parameter Search}
 \indent
 \indent The goal of this endeavour is to determine the parameters of our predator-prey system which provide a stable ecosystem.  In other words, we wish to find a 

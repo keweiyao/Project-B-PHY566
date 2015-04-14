@@ -41,8 +41,8 @@ class animal:
         self.present_position = (i, j)  # initialize the present positon with i and j
         self.breedage = reproduction_age# setting procreation age
         self.starveage = starve_age     # setting starve age
-        self.age_rep = randint(0, int(reproduction_age))
-        self.age_starve = randint(0, int(starve_age))
+        self.age_rep = 0#randint(0, int(reproduction_age))
+        self.age_starve = 0#randint(0, int(starve_age))
         self.living_status = "live"     # setting live status of the animal "live"/"dead", each time when we loop over
                                         #the list of animals we will delete the object with status "dead"
         self.breed_status = "immature"  # setting the breed statys of the animal "mature"/"immature", each time when we loop over
@@ -96,9 +96,9 @@ class eco_system:
         self.wolf_list = []
         
         self.deer_starve = 1e10
-        self.deer_rep = 5
-        self.wolf_starve = 10
-        self.wolf_rep = 15
+        self.deer_rep = 10
+        self.wolf_starve = 30
+        self.wolf_rep = 50
         
         #initialize the deer list
         for i in range(self.n_deer):
@@ -269,7 +269,7 @@ class eco_system:
 #testing
 our_eco_system = eco_system(150, 50, 50)
 
-deernum, wolfnum, timenum = our_eco_system.eco_evolution(5000)
+deernum, wolfnum, timenum = our_eco_system.eco_evolution(1000)
 
 figure(figsize = (7, 7))
 subplot(1,2,1)
@@ -278,7 +278,7 @@ plot(timenum, deernum, "b", linewidth = 3, label = "deer population")
 legend(loc = "upper right", fontsize = 15)
 #semilogy()
 subplot(1,2,2)
-plot(wolfnum, deernum, 'g', linewidth = 3, label = "Phase space trajectory")
+plot(deernum, wolfnum, 'g', linewidth = 3, label = "Phase space trajectory")
 legend(loc = "upper right", fontsize = 15)
 xlabel("Deer population", fontsize = 15)
 ylabel("Wolf population", fontsize = 15)
