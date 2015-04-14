@@ -78,9 +78,12 @@ With the initialisation and time updating procedures, we are able to "predict" t
 
 \section{Results and discussion}
 \subsection{Generic results}
-A detailed investigation of the full parameter space is in next section "Parameter Search", here we just conduct a few sanity test of our code with a few set of parameters.
+A detailed investigation of the full parameter space is in next section "Parameter Search", here we just conduct a few sanity test of our code with a few set of parameters. The parameters for Fig. (\ref{gen}) are listed in Table (\ref{Few_parameters}). Two of them are initialised with uniform age structure and the other two with all members the same age. 
 
-The parameters for Fig. (\ref{gen}) are listed in Table (\ref{Few_parameters}).
+The left panel is the time evolution of the populations. We observe some discontinuities in subfigure 2 and 4, this is because each generation of the population have the same age, so they procreate at the same time step. A population with age structure is certainly more realistic and the evolution curves are smooth. We can see that for some parameter set, the eco-system behaves as what is expected by the LV equation, though the random nature introduce large fluctuation. The population of the wolf and deer exhibit quasi-periodic features. The maximum of the wolf is off by a phase angle compared to the maximum of the deer. The structure within each period also changes across different parameter set. It seems long reproduction period of wolf leads to a flattened top of the deer population; because in this case, the wolf population would remain very low for a comparatively longer time period. We observe that in subfigure 3, both deer and wolf finally die out; however, this does not always happen for the same set of parameters, which is result of the randomness of the simulation.
+
+The right panel displays the phase-space trajectory of the system. The quasi-periodic behaviour of time evolution is translated into a quasi-loop trajectory in the phase space. We display the phase space on semi-log scale, so it is obvious that the population can fluctuate over orders of magnitude during evolution.
+
 \begin{table}[htdp]
 \caption{default}
 \begin{center}
