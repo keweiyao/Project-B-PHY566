@@ -143,6 +143,7 @@ They deal with the general loss-win interactions and hence may have applications
   	\begin{itemize}
   	\item<1->{Reproduction age of predators must be larger than their starvation age. (Or else wolf can sustain themselves ...)}
   	\item<2->{Starvation age of the deer is extremely large. (Always enough plants!)}
+	\item<3->{A realistic population always have some age structures, so we use a uniform initial age distribution for the animals.}
   	\end{itemize} 
 }
 
@@ -181,6 +182,7 @@ They deal with the general loss-win interactions and hence may have applications
   	}
    	\end{itemize}
 }
+
 \frame
 {
 	\frametitle{Population interaction of predator and prey in eco-system}
@@ -189,6 +191,32 @@ They deal with the general loss-win interactions and hence may have applications
 	\begin{center}
 	\includegraphics[width=0.6\textwidth]{./pics/progressive-energy-loss.jpeg}
 	\caption{default}
+	\label{default}
+	\end{center}
+	\end{figure}
+}
+
+\frame
+{
+	\frametitle{Generic results}
+
+	\begin{figure}[htbp]
+	\begin{center}
+	\includegraphics[width=0.6\textwidth]{./pics/age_structure.png}
+	\caption{Initialised without age structure. This is an example of wolf distinction.}
+	\label{default}
+	\end{center}
+	\end{figure}
+}
+
+\frame
+{
+	\frametitle{Generic results}
+
+	\begin{figure}[htbp]
+	\begin{center}
+	\includegraphics[width=0.8\textwidth]{./pics/phase_space.png}
+	\caption{Initialised with uniform age structure. A quasi-periodic evolution is obtained.}
 	\label{default}
 	\end{center}
 	\end{figure}
