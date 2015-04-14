@@ -1,6 +1,6 @@
 \documentclass{beamer}
 %\usepackage{beamerthemesplit} 
-\usepackage{tikz}
+\usepackage{tikz,caption}
 \usetikzlibrary{trees}
 
 \title{Computational Physics Group Project: \\ Ecosystem: predator and prey}
@@ -321,6 +321,41 @@ They deal with the general loss-win interactions and hence may have applications
         \label{RestrictParam}
   \end{figure}
 
+}
+\frame
+{
+  \setbeamertemplate{caption}{\insertcaption\par}
+  \frametitle{TEST}
+  \begin{figure}[ht]
+  \centering
+                \begin{minipage}[b]{.3\linewidth}
+                        \includegraphics[width = 1\linewidth]{./pics/Restricted_Parameter_space_d2500_w250.png}
+                    \caption{\tiny{Deer: 2500; Wolves: 250}}
+                \end{minipage}
+                \quad
+                \begin{minipage}[b]{.3\linewidth}
+                \includegraphics[width = 1\linewidth]{./pics/Restricted_Parameter_space_d3000_w500.png}
+                \caption{\tiny{Deer: 3000; Wolves: 500}}
+                \end{minipage}
+                \begin{minipage}[b]{.3\linewidth}
+                        \includegraphics[width = 1\linewidth]{./pics/Restricted_Parameter_space_d2000_w2000.png}
+                    \caption{\tiny{Deer: 2000; Wolves: 2000}}
+                \end{minipage}
+
+  \end{figure}
+
+  \begin{figure}[ht]
+  \centering
+                \begin{minipage}[b]{.27\linewidth}
+                \includegraphics[width = 1\linewidth]{./pics/Restricted_Parameter_space_d500_w3000.png}
+                \caption{\tiny{Deer: 500; Wolves: 3000}}
+                \end{minipage}
+                \quad
+		\begin{minipage}[b]{.27\linewidth}
+                \includegraphics[width = 1\linewidth]{./pics/Restricted_Parameter_space_d250_w2500.png}
+                \caption{\tiny{Deer: 250; Wolves: 2500}}
+		\end{minipage}
+  \end{figure}
 }
 \frame
 {
