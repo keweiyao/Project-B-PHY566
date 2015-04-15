@@ -14,7 +14,7 @@
 \section{Abstract}
 Predator prey models are used to determine behaviors of competitive "species". Any type of loss-win situation is basically a predator prey model in one of its many forms.
 These models can be used to describe systems out of the eco-system context. For example, in economics, they are used to predict demand supply models, etc., in the field of public health they may be used to model interactions between infected and healthy populations.
-In this paper, the Lotke-Voltera equations were used as a basis to simulate a "predator-prey ecosystem", where, "predator" and "prey" populations were randomly generated and they exhibited the random walk in the ecosystem where the "predator" ate the "prey" and both species "reproduced" similar to how a microbe reproduces, after reaching a set "age" value.
+In this paper, the Lotka-Voltera equations were used as a basis to simulate a "predator-prey ecosystem", where, "predator" and "prey" populations were randomly generated and they exhibited the random walk in the ecosystem where the "predator" ate the "prey" and both species "reproduced" similar to how a microbe reproduces, after reaching a set "age" value.
 An analysis of the various parameters was also carried out, and an attempt to find a relation between parameters which give rise to stable systems was made.\\ 
 
 The following is the link to the GitHub account of the work done in this paper: \\
@@ -23,7 +23,7 @@ https://github.com/keweiyao/Project-B-PHY566.git
 \end{center}
 
 \section{Introduction to eco-system modelling}
-The dynamics of biological systems consist of one predator and one prey can be described by Lotka-Volterra equations:
+The dynamics of biological systems consisting of one predator and one prey can be described by Lotka-Volterra equations:
 \begin{eqnarray*}
 \frac{dx}{dt} &=& \alpha x - \beta x y = x(\alpha - \beta y) \\
 \frac{dy}{dt} &=& - \gamma y + \delta x y = - y (\gamma - \delta x)
@@ -35,7 +35,7 @@ When the biological system has reached eco-equilibrium, the number of predator a
   \includegraphics[width=0.8\textwidth]{./pics/evolution.png}
   \caption{}\label{Fig:evolution}
 \end{figure}
-Where, the peak of predator population is always $90^{\circ}$ ahead of that of prey population. \\
+Where, the peak of the predator population is always $90^{\circ}$ ahead of that of prey population. \\
 On the other hand, in mathematical prospect, the L-V equations have two solutions:
 \begin{eqnarray*}
 \textrm{(i)  } x &=& 0, y = 0 \\
@@ -122,7 +122,7 @@ initial age structure	&	uniform	&	uniform	&	all 0	&	all 0	\\
 
 \subsection{Parameter Search}
 \indent
-\indent The goal of this endeavour is to determine the parameters of our predator-prey system which provide a stable ecosystem.  In other words, we wish to find a 
+\indent The goal of this endeavor is to determine the parameters of our predator-prey system which provide a stable ecosystem.  In other words, we wish to find a 
 system which satisfy the equilibrium condition of the Lotka-Volterra equations (i.e. when $\frac{dx}{dt} = \frac{dy}{dt} = 0$).  There are two possible solutions to 
 this equilibirum condition: (1) when x=y=0 (the trivial solution), and (2) when $x=\frac{\gamma}{\delta}$ and $y=\frac{\alpha}{\beta}$ (non-trivial solution).  
 
@@ -141,7 +141,7 @@ the ratio between the deer and the wolf populations.  To display this visually, 
 the starvation age of the wolf to be the cartesian axes in 3D, respectively.  The ratio of the populations is represented by the size of the point in our space.
 
 To determine whether or not these parameters satisfy the equilibrium condition, we determine whether or not the populations are nonzero after a sufficiently long time. 
-If a population is found to die out, then the data point is colored red.  On the other hand,if the populations do not die out after a certina amount of time, the 
+If a population is found to die out, then the data point is colored red.  On the other hand,if the populations do not die out after a certian amount of time, the 
 ecosystem may be stable, so it is colored blue.
 
 \subsection{Full Parameter Search}
@@ -149,18 +149,18 @@ ecosystem may be stable, so it is colored blue.
 The initial number of wold and deer populations was also randomly selected for each data point, the size of the points denote the ratio of the deer population to the wolf population.
 As can be seen, there is no obvious trend observed in this kind of parameter sweep. It was observed that at some parameter configurations, a blue point was superimposed by a red point, this shows that even though parameter values remain constant, the randomness of the system, can give rise to both stable and unstable configurations.
 Another way to rationalize this result of having found no obvious trend is that, maybe the parameters are related to each other in a different way, say for instance, a parameter is related to only pne other and not the rest, or maybe it is related to the diference in some other parameter values and not the basolute parameter value itself. 
-It shoud also be noted that the grid size during these trials was kept constant as it was reasoned that as the initial number of populations are randomly selected, it automatically covers a wide rande of "resource" to individual ratio and hence the grid size does not matter. Obviously, this isnt a physical system and so the term "resource" has no meaning, hence the grid size is a redundant quantity anyways. 
+It shoud also be noted that the grid size during these trials was kept constant as it was reasoned that as the initial number of populations are randomly selected, it automatically covers a wide rande of "resource" to individual ratio and hence the grid size does not matter. Obviously, this is not a physical system and so the term "resource" has no meaning, hence the grid size is a redundant quantity anyways. 
 This however was not tested.
 \begin{figure}
 	\includegraphics[width = 1\textwidth]{./pics/Eco_All_param_front.png}
-	\label{full_para}
+	\caption{}\label{full_para}
 \end{figure}
 \subsection{Restricted Parameter Search}
 \indent
 \indent Since the full parameter search did not yield any striking trends, we select fixed ratios of the initial deer and wolf populations.  The ratios chosen to provide 
 a small sample were 10, 5, 1, 0.20, and 0.10. The results are shown below.
 
-  \begin{figure}[ht]
+  \begin{figure}[H]
   \centering
                 \begin{minipage}[b]{.45\linewidth}
                         \includegraphics[width = 1\linewidth]{./pics/Restricted_Parameter_space_d2500_w250.png}
@@ -173,7 +173,7 @@ a small sample were 10, 5, 1, 0.20, and 0.10. The results are shown below.
                 \end{minipage}
   \end{figure}
 
-  \begin{figure}[ht]
+  \begin{figure}[H]
   \centering
                 \begin{minipage}[b]{.45\linewidth}
                         \includegraphics[width = 1\linewidth]{./pics/Restricted_Parameter_space_d2000_w2000.png}
@@ -186,7 +186,7 @@ a small sample were 10, 5, 1, 0.20, and 0.10. The results are shown below.
                 \end{minipage}
   \end{figure}
 
-  \begin{figure}[ht]
+  \begin{figure}[H]
   \centering
                 \begin{subfigure}[t]{.45\linewidth}
                 \includegraphics[width = 1\linewidth]{./pics/Restricted_Parameter_space_d250_w2500.png}
@@ -197,8 +197,8 @@ a small sample were 10, 5, 1, 0.20, and 0.10. The results are shown below.
 
 From the data above, it appears that as the ratio of deer to wolves decreases, the instabilities of the system for the other 3 free parameters increase.  This
 makes sense because if there are too many wolves at the start of our system time, then the first generation of wolves will eat all of the deer. This is especially
-true when the reproduction age of the deer is high.  As for the regions in each parameter space, we notice common trends across all rations.  It appears that for 
-ratios that are small, the cases when the deer reproduction age is very large results in an unstable ecosystem unstable.  Conversely, there is a "sweet spot" 
+true when the reproduction age of the deer is high.  As for the regions in each parameter space, we notice common trends across all ratios.  It appears that for 
+ratios that are small and when large deer reproduction, this results in an unstable ecosystem unstable.  Conversely, there is a "sweet spot" 
 of the parameter space which consistently yields a stable ecosystem.  This occurs when the reproduction age of the deer is low and the wolf starvation age is low.  
 This also seems to be a fair assumption for any wolf starvation age according to the results.  
 
