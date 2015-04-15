@@ -147,7 +147,10 @@ ecosystem may be stable, so it is colored blue.
 \subsection{Full Parameter Search}
 \indent Fig.(\ref{full_para}) shows a scatter plot, where each point marks the stability (blue) or instability (red) of the system after 300 time points for a 1000 trials. The parameters of reproductive age for the deer and wolf as well as wolf starvation age were randomly selected.
 The initial number of wold and deer populations was also randomly selected for each data point, the size of the points denote the ratio of the deer population to the wolf population.
-AS can be seen, there is no obvious trend observed in this kind of parameter sweep. It should be noted
+As can be seen, there is no obvious trend observed in this kind of parameter sweep. It was observed that at some parameter configurations, a blue point was superimposed by a red point, this shows that even though parameter values remain constant, the randomness of the system, can give rise to both stable and unstable configurations.
+Another way to rationalize this result of having found no obvious trend is that, maybe the parameters are related to each other in a different way, say for instance, a parameter is related to only pne other and not the rest, or maybe it is related to the diference in some other parameter values and not the basolute parameter value itself. 
+It shoud also be noted that the grid size during these trials was kept constant as it was reasoned that as the initial number of populations are randomly selected, it automatically covers a wide rande of "resource" to individual ratio and hence the grid size does not matter. Obviously, this isnt a physical system and so the term "resource" has no meaning, hence the grid size is a redundant quantity anyways. 
+This however was not tested.
 \begin{figure}
 	\includegraphics[width = 1\textwidth]{./pics/Eco_All_param_front.png}
 	\label{full_para}
